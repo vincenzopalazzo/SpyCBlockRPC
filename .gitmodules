@@ -1,0 +1,2 @@
+[submodule "lib/cpp-properties"]
+	url = https://github.com/vincenzopalazzo/cpp-properties.git
