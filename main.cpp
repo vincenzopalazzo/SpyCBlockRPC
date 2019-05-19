@@ -72,6 +72,8 @@ void saveBlock(blockinfo_t blockinfo){
     StringBuffer stringBuffer;
     Writer<StringBuffer> writer(stringBuffer);
 
+    writer.StartObject();
+
     writer.String("Height");
     writer.Int(blockinfo.height);
     writer.String("Hash");
@@ -84,6 +86,9 @@ void saveBlock(blockinfo_t blockinfo){
     writer.Int(blockinfo.nonce);
     writer.String("previushash");
     writer.String(blockinfo.previousblockhash.c_str());
+
+    writer.EndObject();
+
     ofstream stream(rootPath() + "/storage/genesisBlockRpc.json");
     stream << stringBuffer.GetString();
 }
