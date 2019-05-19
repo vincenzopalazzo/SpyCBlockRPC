@@ -1,0 +1,6 @@
+## File cmake
+cmake-build-debug/
+
+#File ide
+.idea/
+*.iml
