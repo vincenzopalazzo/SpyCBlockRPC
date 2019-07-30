@@ -1,2 +1,5 @@
 [submodule "lib/cpp-properties"]
 	url = https://github.com/vincenzopalazzo/cpp-properties.git
+[submodule "bitcoin-api-cpp"]
+	path = bitcoin-api-cpp
+	url = https://github.com/vincenzopalazzo/bitcoin-api-cpp.git
