@@ -1,0 +1,4 @@
+#ifndef IRPCCOMMAND_H
+#define IRPCCOMMAND_H
+
+#endif // IRPCCOMMAND_H

@@ -7,8 +7,6 @@ set(CMAKE_CXX_STANDARD 14)
 find_package(glog 0.3.5 REQUIRED)
 #bitcoin rpc lib
 find_library(bitcoinapi 0.3 REQUIRED)
-#Rapid json
-find_package(RapidJSON)
 
 add_executable(
         ${PROJECT_NAME}
@@ -18,10 +16,18 @@ add_executable(
         lib/cpp-properties/src/PropertiesParser.cpp
         lib/cpp-properties/src/PropertiesUtils.cpp
 
+        core/graph/TransactionGraph.cpp
+        core/graph/WrapperInformations.cpp
+
+        commands/DecodeScriptCommand.cpp
+
+        ClientBitcoinSingleton.cpp
+
         main.cpp
 )
 
 #using glog
 target_link_libraries(${PROJECT_NAME} glog::glog)
 target_link_libraries(${PROJECT_NAME} bitcoinapi)
+##using filesystem
 target_link_libraries(${PROJECT_NAME} stdc++fs)

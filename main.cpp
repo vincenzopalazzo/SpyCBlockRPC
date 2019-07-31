@@ -1,22 +1,14 @@
 #include <iostream>
 #include <string>
-#include <limits.h>
-#include <unistd.h>
 #include <experimental/filesystem>
-
 #include <PropertiesParser.h>
 #include <glog/logging.h>
 #include <bitcoinapi/bitcoinapi.h>
-#include <fstream>
 #include "Properties.h"
-#include <rapidjson/stringbuffer.h>
-#include <rapidjson/writer.h>
+#include <fstream>
 
 using namespace std;
 using namespace cppproperties;
-using namespace rapidjson;
-
-void saveBlock(blockinfo_t blockinfo);
 string rootPath();
 
 const string SCRIPT_OUTPUT_GENESIS_BLOCK = "4104678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5fac";
@@ -49,7 +41,6 @@ int main() {
         LOG(INFO) << "The hash genesis block is: " << hashGenesisBlock;
 
         blockinfo_t block = btc.getblock(hashGenesisBlock);
-        saveBlock(block);
 
         //------ Test get script ------
         decodescript_t script = btc.decodescript(SCRIPT_OUTPUT_GENESIS_BLOCK);
@@ -65,30 +56,4 @@ int main() {
 
 string rootPath(){
     return experimental::filesystem::current_path();
-}
-
-void saveBlock(blockinfo_t blockinfo){
-
-    StringBuffer stringBuffer;
-    Writer<StringBuffer> writer(stringBuffer);
-
-    writer.StartObject();
-
-    writer.String("Height");
-    writer.Int(blockinfo.height);
-    writer.String("Hash");
-    writer.String(blockinfo.hash.c_str());
-    writer.String("merkleroot");
-    writer.String(blockinfo.merkleroot.c_str());
-    writer.String("ntx");
-    writer.Int(blockinfo.tx.size());
-    writer.String("nonce");
-    writer.Int(blockinfo.nonce);
-    writer.String("previushash");
-    writer.String(blockinfo.previousblockhash.c_str());
-
-    writer.EndObject();
-
-    ofstream stream(rootPath() + "/storage/genesisBlockRpc.json");
-    stream << stringBuffer.GetString();
 }
