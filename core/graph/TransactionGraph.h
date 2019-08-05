@@ -12,15 +12,15 @@ namespace spyCBlockRPC {
     {
         public:
 
-          void serialize(std::fstream &stream) override;
+          void serialize(std::ofstream &stream) override;
 
           void buildTransaction(WrapperInformations &wrapper) override;
 
         private:
 
-          std::string from;
+          std::vector<std::string> from;
 
-          std::string to;
+          std::vector<std::string> to;
 
           std::vector<std::string> linkInformations;
 

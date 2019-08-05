@@ -20,8 +20,23 @@ spyCBlockRPC::ClientBitcoinSingleton::ClientBitcoinSingleton()
              << "\nip: " << ip
              << "\nport: " << port;
 
-  this->bitcoinApi = BitcoinAPI(user, pass, ip, port);
+  this->dirLogTest = config.GetProperty(DIR_LOG_TEST);
+  this->dirDatatest = config.GetProperty(DIR_DATA_TEST);
+  LOG(INFO) << "The dir for log test is: " << dirLogTest
+            << " and the data dir is: " << dirDatatest;
 
+  bitcoinApi = BitcoinAPI{user, pass, ip, port};
+
+}
+
+std::string ClientBitcoinSingleton::getDirDatatest() const
+{
+  return dirDatatest;
+}
+
+std::string ClientBitcoinSingleton::getDirLogTest() const
+{
+  return dirLogTest;
 }
 
 BitcoinAPI ClientBitcoinSingleton::getBitcoinApi() const

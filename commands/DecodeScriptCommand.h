@@ -8,7 +8,8 @@ namespace spyCBlockRPC {
     class DecodeScriptCommand : IRPCCommand
     {
         public:
-            std::string doCommand(std::string &input) override;
+
+          void doCommand(WrapperInformations &wrapper) override;
     };
 }
 

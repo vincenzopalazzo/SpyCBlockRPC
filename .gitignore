@@ -1,9 +1,10 @@
 ## File cmake
-cmake-build-debug/
-CMakeFiles
-CMakeCache.txt
+**/cmake-build-debug/
+**/CMakeFiles
+**/CMakeCache.txt
 *.cmake
 
 #File ide
 .idea/
 *.iml
+*.user

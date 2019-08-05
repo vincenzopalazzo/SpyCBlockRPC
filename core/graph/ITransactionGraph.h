@@ -11,7 +11,7 @@ namespace spyCBlockRPC {
     {
         public:
 
-            virtual void serialize(std::fstream &stream) = 0;
+            virtual void serialize(std::ofstream &stream) = 0;
 
             virtual void buildTransaction(WrapperInformations &wrapper) = 0;
 

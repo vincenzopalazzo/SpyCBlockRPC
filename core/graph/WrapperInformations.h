@@ -12,22 +12,42 @@ namespace spyCBlockRPC {
         public:
 
             std::string getFrom() const;
+
             void setFrom(const std::string &value);
 
             std::string getTo() const;
+
             void setTo(const std::string &value);
 
             std::vector<std::string> getLinkInformations() const;
+
             void setLinkInformations(const std::vector<std::string> &value);
 
-        private:
+            std::vector<std::string> getFromIdWallets() const;
+
+            std::vector<std::string> getToIdWallets() const;
+
+            void setToIdWallets(const std::vector<std::string> &value);
+
+            void setFromIdWallets(const std::vector<std::string> &value);
+
+            std::string getDelimitator() const;
+
+            void setDelimitator(const std::string &value);
+
+    private:
 
             std::string from;
 
+            std::vector<std::string> fromIdWallets;
+
             std::string to;
+
+            std::vector<std::string> toIdWallets;
 
             std::vector<std::string> linkInformations;
 
+            std::string delimitator;
     };
 
 }

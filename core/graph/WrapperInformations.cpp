@@ -34,3 +34,33 @@ void WrapperInformations::setLinkInformations(const std::vector<std::string> &va
 {
     linkInformations = value;
 }
+
+std::vector<std::string> WrapperInformations::getFromIdWallets() const
+{
+  return fromIdWallets;
+}
+
+std::vector<std::string> WrapperInformations::getToIdWallets() const
+{
+  return toIdWallets;
+}
+
+void WrapperInformations::setToIdWallets(const std::vector<std::string> &value)
+{
+  toIdWallets = value;
+}
+
+void WrapperInformations::setFromIdWallets(const std::vector<std::string> &value)
+{
+  fromIdWallets = value;
+}
+
+std::string WrapperInformations::getDelimitator() const
+{
+  return delimitator;
+}
+
+void WrapperInformations::setDelimitator(const std::string &value)
+{
+  delimitator = value;
+}

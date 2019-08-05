@@ -1,14 +1,50 @@
 #include <glog/logging.h>
 
 #include "TransactionGraph.h"
+#include "../../commands/RPCCommandMediator.h"
+#include "WrapperInformations.h"
 
-using namespace spyCBlockRPC;
 using namespace std;
+using namespace spyCBlockRPC;
 
-
-void TransactionGraph::serialize(fstream &stream)
+//TODO test this informations
+void TransactionGraph::serialize(ofstream &stream)
 {
-  //TODO call dao for serialize this information
+  LOG(INFO) << "************ Serialization this information ************\n";
+  //Not serialize the transaction many to many
+  if(this->to.size() == 1 || this->from.size() == 1)
+  {
+    string serializeTransaction;
+       //Serialization informations input
+       for(int i = 0; i < static_cast<int>(this->from.size()); i++)
+       {
+         unsigned long value = static_cast<unsigned long>(i);
+         //if(value == this->from.size() - 1)
+         //{
+          // serializeTransaction += from.at(value);
+         //}else{
+           serializeTransaction += from.at(value);
+         //}
+         //Serialization information link
+         for(string &information: this->linkInformations)
+         {
+           serializeTransaction += (delimitator + information);
+         }
+         //serializzation information output
+         for(int i = 0; i < static_cast<int>(this->to.size()); i++)
+         {
+            unsigned long value = static_cast<unsigned long>(i);
+            //if(value == this->from.size() - 1)
+            //{
+             // serializeTransaction += from.at(value);
+           // }else{
+              serializeTransaction += (delimitator + to.at(value));
+            //}
+            LOG(INFO) << serializeTransaction;
+            stream << serializeTransaction;
+         }
+      }
+    }
 }
 
 void TransactionGraph::buildTransaction(WrapperInformations &wrapper)
@@ -21,5 +57,14 @@ void TransactionGraph::buildTransaction(WrapperInformations &wrapper)
   this->linkInformations = wrapper.getLinkInformations();
   LOG(WARNING) << "Information size: " << linkInformations.size();
 
-  //TODO convert the script to is wallet
+  this->delimitator = wrapper.getDelimitator();
+  LOG(INFO) << "Delimitator: " << delimitator;
+
+  RPCCommandMediator::getInstance().doCommand(RPCCommandMediator::getInstance().DECODE_SCRIPT_COMMAND, wrapper);
+
+  this->from = wrapper.getFromIdWallets();
+  this->to = wrapper.getToIdWallets();
+
+  this->linkInformations = wrapper.getLinkInformations();
+  LOG(INFO) << "Numbar information link: " << linkInformations.size();
 }
