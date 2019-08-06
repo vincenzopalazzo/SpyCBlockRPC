@@ -4,8 +4,11 @@
 #include <map>
 #include <string>
 
+#include <bitcoinapi/bitcoinapi.h>
+
 #include "IRPCCommand.h"
 #include "DecodeScriptCommand.h"
+#include "../ConfiguratorSingleton.h"
 
 namespace spyCBlockRPC
 {
@@ -32,7 +35,7 @@ namespace spyCBlockRPC
 
         if(keyCommand == DECODE_SCRIPT_COMMAND)
         {
-          decodeScript.doCommand(wrapper);
+          decodeScript.doCommand(wrapper, bitcoinApi);
           return;
         }
 
@@ -42,11 +45,14 @@ namespace spyCBlockRPC
 
     private:
 
-      RPCCommandMediator(){}
+      RPCCommandMediator() : bitcoinApi(ConfiguratorSingleton::getInstance().getUser(),
+                                        ConfiguratorSingleton::getInstance().getPassword(),
+                                        ConfiguratorSingleton::getInstance().getHost(),
+                                        ConfiguratorSingleton::getInstance().getPort()){}
 
       DecodeScriptCommand decodeScript;
 
-
+      BitcoinAPI bitcoinApi;
 
   };
 

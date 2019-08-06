@@ -9,7 +9,7 @@ namespace spyCBlockRPC {
     {
         public:
 
-          void doCommand(WrapperInformations &wrapper) override;
+          void doCommand(WrapperInformations &wrapper, BitcoinAPI &bitcoinApi) override;
     };
 }
 

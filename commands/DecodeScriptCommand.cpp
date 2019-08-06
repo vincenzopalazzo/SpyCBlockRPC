@@ -2,18 +2,19 @@
 #include <glog/logging.h>
 
 #include "DecodeScriptCommand.h"
-#include "../ClientBitcoinSingleton.h"
+#include "../ConfiguratorSingleton.h"
 
 using namespace spyCBlockRPC;
 using namespace std;
 
-void DecodeScriptCommand::doCommand(WrapperInformations &wrapper)
+void DecodeScriptCommand::doCommand(WrapperInformations &wrapper, BitcoinAPI &bitcoinApi)
 {
-  //BitcoinAPI bitcoinApi = ClientBitcoinSingleton::getInstance().getBitcoinApi();
-  BitcoinAPI bitcoinApi{"vincent", "vincent", "127.0.0.1", 8332};
-  string scriptSing = wrapper.getFrom();
+
+  string scriptSig = wrapper.getFrom();
   string scriptPubKey = wrapper.getTo();
-  decodescript_t respose = bitcoinApi.decodescript(scriptSing);
+  //decodescript_t respose = bitcoinApi.decodescript(scriptSig);
+  //BitcoinAPI client = ClientBitcoinSingleton::getInstance().getBitcoinApi();
+  decodescript_t respose = bitcoinApi.decodescript(scriptSig);
   //The inpurt can be n and not one
   vector<string> addressesInput;
   if(respose.addresses.empty())
@@ -29,6 +30,7 @@ void DecodeScriptCommand::doCommand(WrapperInformations &wrapper)
   LOG(INFO) << "The input address are: " << addressesInput.size();
   wrapper.setFromIdWallets(addressesInput);
   respose = bitcoinApi.decodescript(scriptPubKey);
+  //respose = bitcoinApi.decodescript(scriptPubKey);
   vector<string> adressesOutput = respose.addresses;
   LOG(INFO) << "The output address are: " << adressesOutput.size();
   wrapper.setToIdWallets(adressesOutput);

@@ -4,7 +4,7 @@
 #include "../core/graph/ITransactionGraph.h"
 #include "../core/graph/TransactionGraph.h"
 #include "../core/graph/WrapperInformations.h"
-#include "../ClientBitcoinSingleton.h"
+#include "../ConfiguratorSingleton.h"
 #include "../commands/RPCCommandMediator.h"
 
 using namespace spyCBlockRPC;
@@ -12,8 +12,8 @@ using namespace std;
 
 TEST(serialization_mock_test, serialization_with_wrapper_mock)
 {
-  string pathMockRoot = ClientBitcoinSingleton::getInstance().getDirDatatest() + "/";
-  string pathLogRoot = ClientBitcoinSingleton::getInstance().getDirLogTest() + "/";
+  string pathMockRoot = ConfiguratorSingleton::getInstance().getDirDatatest() + "/";
+  string pathLogRoot = ConfiguratorSingleton::getInstance().getDirLogTest() + "/";
 
   FLAGS_minloglevel = 0;
   FLAGS_logtostderr = true;
@@ -32,7 +32,12 @@ TEST(serialization_mock_test, serialization_with_wrapper_mock)
   wrapper.setDelimitator("|");
 
   TransactionGraph transaction;
-  transaction.buildTransaction(wrapper);
+  try {
+    transaction.buildTransaction(wrapper);
+  } catch (BitcoinException ex) {
+    FAIL() << ex.what();
+  }
+
 
   ASSERT_EQ(wrapper.getFromIdWallets().size(), 1); //Coinbase
   ASSERT_EQ(wrapper.getFromIdWallets().at(0), "Coinbase");
@@ -49,8 +54,8 @@ TEST(serialization_mock_test, serialization_with_wrapper_mock)
 //This transaction mustn't be serializated because is an many to many
 TEST(serialization_mock_test, witness_serialization_many_to_may_adress_wrapper_mock)
 {
-  string pathMockRoot = ClientBitcoinSingleton::getInstance().getDirDatatest() + "/";
-  string pathLogRoot = ClientBitcoinSingleton::getInstance().getDirLogTest() + "/";
+  string pathMockRoot = ConfiguratorSingleton::getInstance().getDirDatatest() + "/";
+  string pathLogRoot = ConfiguratorSingleton::getInstance().getDirLogTest() + "/";
 
   FLAGS_minloglevel = 0;
   FLAGS_logtostderr = true;
@@ -70,7 +75,11 @@ TEST(serialization_mock_test, witness_serialization_many_to_may_adress_wrapper_m
   wrapper.setDelimitator(" ");
 
   TransactionGraph transaction;
-  transaction.buildTransaction(wrapper);
+  try {
+    transaction.buildTransaction(wrapper);
+  } catch (BitcoinException ex) {
+    FAIL() << ex.what();
+  }
 
   ASSERT_EQ(wrapper.getFromIdWallets().at(0), "3CRAKZdSrHY5cBPCxBncXRRJDKCGF5saMa"); //Coinbase
 
@@ -86,8 +95,8 @@ TEST(serialization_mock_test, witness_serialization_many_to_may_adress_wrapper_m
 
 TEST(serialization_mock_test, witness_serialization_adress_wrapper_mock)
 {
-  string pathMockRoot = ClientBitcoinSingleton::getInstance().getDirDatatest() + "/";
-  string pathLogRoot = ClientBitcoinSingleton::getInstance().getDirLogTest() + "/";
+  string pathMockRoot = ConfiguratorSingleton::getInstance().getDirDatatest() + "/";
+  string pathLogRoot = ConfiguratorSingleton::getInstance().getDirLogTest() + "/";
 
   FLAGS_minloglevel = 0;
   FLAGS_logtostderr = true;
@@ -107,7 +116,11 @@ TEST(serialization_mock_test, witness_serialization_adress_wrapper_mock)
   wrapper.setDelimitator(" ");
 
   TransactionGraph transaction;
-  transaction.buildTransaction(wrapper);
+  try {
+    transaction.buildTransaction(wrapper);
+  } catch (BitcoinException ex) {
+    FAIL() << ex.what();
+  }
 
   ASSERT_EQ(wrapper.getFromIdWallets().at(0), "3CRAKZdSrHY5cBPCxBncXRRJDKCGF5saMa"); //Coinbase
 

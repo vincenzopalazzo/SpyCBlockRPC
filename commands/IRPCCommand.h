@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 
+#include <bitcoinapi/bitcoinapi.h>
+
 #include "../core/graph/WrapperInformations.h"
 
 namespace spyCBlockRPC
@@ -12,7 +14,7 @@ namespace spyCBlockRPC
   {
     public:
 
-      virtual void doCommand(WrapperInformations &wrapper) = 0;
+      virtual void doCommand(WrapperInformations &wrapper, BitcoinAPI &bitcoinApi) = 0;
 
   };
 }
