@@ -108,8 +108,6 @@ TEST(rpc_command_mediator_test, execute_command_decode_raw_tx)
     FAIL() << btcEx.getMessage();
   }
 
-  RPCCommandMediator::getInstance().closeConnectionWithNode();
-
   ASSERT_EQ(wrapper.getTo(), "47304402202c00cfb5a685527f40fa47c0f39b18205621b4702ee372a47f9d95fe82f5cf"
                              "75022002c857266fd7ade4e3d2723e620531fca8fe4d21cb796e302b98baef51cf9261"
                              "0121038aaca328c54797b9c18b020045105e64ee99d103a93f701ae30a39b20c217cec");
@@ -142,8 +140,6 @@ TEST(rpc_command_mediator_test, execute_command_decode_raw_tx_coinbase)
   } catch (BitcoinException btcEx) {
     FAIL() << btcEx.getMessage();
   }
-
-  RPCCommandMediator::getInstance().closeConnectionWithNode();
 
   ASSERT_EQ(wrapper.getTo(), "Coinbase");
 }

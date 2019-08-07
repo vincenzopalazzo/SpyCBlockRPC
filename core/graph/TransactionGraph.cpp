@@ -62,7 +62,7 @@ void TransactionGraph::buildTransaction(WrapperInformations &wrapper)
 
   RPCCommandMediator::getInstance().doCommand(RPCCommandMediator::getInstance().DECODE_SCRIPT_COMMAND, wrapper);
 
-  RPCCommandMediator::getInstance().closeConnectionWithNode();
+ // RPCCommandMediator::getInstance().closeConnectionWithNode(); this command close the bitcoind
 
   this->from = wrapper.getFromIdWallets();
   this->to = wrapper.getToIdWallets();
