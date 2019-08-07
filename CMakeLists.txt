@@ -26,6 +26,7 @@ add_executable(
         core/graph/WrapperInformations.cpp
 
         commands/DecodeScriptCommand.cpp
+        commands/DecodeRawTransaction.cpp
 
         ConfiguratorSingleton.cpp
 
@@ -33,6 +34,7 @@ add_executable(
 )
 
 add_executable(
+
         SpyCBlockRPCTest
 
         #cpp-properties file include
@@ -42,13 +44,18 @@ add_executable(
 
         core/graph/TransactionGraph.cpp
         core/graph/WrapperInformations.cpp
+
         commands/DecodeScriptCommand.cpp
+        commands/DecodeRawTransaction.cpp
 
         ConfiguratorSingleton.cpp
 
 
         #Test
         test/SerializationMockTest.cpp
+        test/RPCCOmmandMediatorTest.cpp
+        test/DecodeScriptCommandTest.cpp
+        test/DecodeRawTransactionCommand.cpp
 
         )
 

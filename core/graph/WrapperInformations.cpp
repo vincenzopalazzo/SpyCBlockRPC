@@ -64,3 +64,23 @@ void WrapperInformations::setDelimitator(const std::string &value)
 {
   delimitator = value;
 }
+
+std::string WrapperInformations::getHashPreviousTx() const
+{
+    return hashPreviousTx;
+}
+
+void WrapperInformations::setHashPreviousTx(const std::string &value)
+{
+    hashPreviousTx = value;
+}
+
+uint64_t WrapperInformations::getNOutpoint() const
+{
+    return nOutpoint;
+}
+
+void WrapperInformations::setNOutpoint(const uint64_t &value)
+{
+    nOutpoint = value;
+}

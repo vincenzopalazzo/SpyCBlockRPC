@@ -20,7 +20,8 @@ TEST(serialization_mock_test, serialization_with_wrapper_mock)
   google::SetLogDestination(google::GLOG_ERROR, pathLogRoot.append("serialization_with_wrapper_mock.log").c_str());
 
   WrapperInformations wrapper;
-  wrapper.setFrom("04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73");
+  wrapper.setHashPreviousTx("0000000000000000000000000000000000000000000000000000000000000000");
+  wrapper.setNOutpoint(5000000000);
   wrapper.setTo("4104678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5fac");
 
   vector<string> linkInformations;
@@ -32,10 +33,11 @@ TEST(serialization_mock_test, serialization_with_wrapper_mock)
   wrapper.setDelimitator("|");
 
   TransactionGraph transaction;
-  try {
+  try
+  {
     transaction.buildTransaction(wrapper);
   } catch (BitcoinException ex) {
-    FAIL() << ex.what();
+    FAIL() << ex.getMessage();
   }
 
 
@@ -62,7 +64,11 @@ TEST(serialization_mock_test, witness_serialization_many_to_may_adress_wrapper_m
   google::SetLogDestination(google::GLOG_ERROR, pathLogRoot.append("not_serialization_many_to_may_adress_wrapper_mock.log").c_str());
 
   WrapperInformations wrapper;
-  wrapper.setFrom("001444ea678cf84c5c17497b3fd974ed370f89a314f9");
+
+  wrapper.setHashPreviousTx("056d8c9f0c9cc0ba0aad4facc0eb72b985fada892d6b3689107f3153d0b7b177");
+  wrapper.setNOutpoint(399503306);
+
+ // wrapper.setFrom("001444ea678cf84c5c17497b3fd974ed370f89a314f9");
 
   wrapper.setTo("76a914cfe29ef5b750cdf45ea3e148f3a607a2ae3fd7df88ac");
 
@@ -75,10 +81,11 @@ TEST(serialization_mock_test, witness_serialization_many_to_may_adress_wrapper_m
   wrapper.setDelimitator(" ");
 
   TransactionGraph transaction;
-  try {
+  try
+  {
     transaction.buildTransaction(wrapper);
   } catch (BitcoinException ex) {
-    FAIL() << ex.what();
+    FAIL() << ex.getMessage();
   }
 
   ASSERT_EQ(wrapper.getFromIdWallets().at(0), "3CRAKZdSrHY5cBPCxBncXRRJDKCGF5saMa"); //Coinbase
@@ -93,6 +100,7 @@ TEST(serialization_mock_test, witness_serialization_many_to_may_adress_wrapper_m
   saveTransaction.close();
 }
 
+//TODO this is not correct
 TEST(serialization_mock_test, witness_serialization_adress_wrapper_mock)
 {
   string pathMockRoot = ConfiguratorSingleton::getInstance().getDirDatatest() + "/";
@@ -103,8 +111,9 @@ TEST(serialization_mock_test, witness_serialization_adress_wrapper_mock)
   google::SetLogDestination(google::GLOG_ERROR, pathLogRoot.append("not_serialization_many_to_may_adress_wrapper_mock.log").c_str());
 
   WrapperInformations wrapper;
-  wrapper.setFrom("483045022100e5e4749d539a163039769f52e1ebc8e6f62e39387d61e1a305bd722116cded6c022014924b745dd02194fe6b5cb8ac88ee8e9a2aede89e680dcea6169ea696e24d52012102b4b754609b46b5d09644c2161f1767b72b93847ce8154d795f95d31031a08aa2");
 
+  wrapper.setHashPreviousTx("056d8c9f0c9cc0ba0aad4facc0eb72b985fada892d6b3689107f3153d0b7b177");
+  wrapper.setNOutpoint(111976);
   wrapper.setTo("76a914a134408afa258a50ed7a1d9817f26b63cc9002cc88ac");
 
   vector<string> linkInformations;
@@ -116,10 +125,11 @@ TEST(serialization_mock_test, witness_serialization_adress_wrapper_mock)
   wrapper.setDelimitator(" ");
 
   TransactionGraph transaction;
-  try {
+  try
+  {
     transaction.buildTransaction(wrapper);
   } catch (BitcoinException ex) {
-    FAIL() << ex.what();
+    FAIL() << ex.getMessage();
   }
 
   ASSERT_EQ(wrapper.getFromIdWallets().at(0), "3CRAKZdSrHY5cBPCxBncXRRJDKCGF5saMa"); //Coinbase

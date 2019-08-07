@@ -35,7 +35,19 @@ namespace spyCBlockRPC {
 
             void setDelimitator(const std::string &value);
 
+            std::string getHashPreviousTx() const;
+
+            void setHashPreviousTx(const std::string &value);
+
+            uint64_t getNOutpoint() const;
+
+            void setNOutpoint(const uint64_t &value);
+
     private:
+
+            std:: string hashPreviousTx;
+
+            uint64_t nOutpoint;
 
             std::string from;
 

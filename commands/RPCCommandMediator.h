@@ -8,8 +8,10 @@
 
 #include "IRPCCommand.h"
 #include "DecodeScriptCommand.h"
+#include "DecodeRawTransaction.h"
 #include "../ConfiguratorSingleton.h"
 
+//TODO add an personal exception
 namespace spyCBlockRPC
 {
   class RPCCommandMediator
@@ -17,6 +19,8 @@ namespace spyCBlockRPC
 
     public:
        const std::string DECODE_SCRIPT_COMMAND = "DECODE_SCRIPT_COMMAND";
+
+       const std::string DECODE_RAW_TX_COMMAND = "DECODE_RAW_TX_COMMAND";
 
       inline static RPCCommandMediator& getInstance()
       {
@@ -39,19 +43,32 @@ namespace spyCBlockRPC
           return;
         }
 
+        if(keyCommand == DECODE_RAW_TX_COMMAND)
+        {
+          decodeRawTx.doCommand(wrapper, bitcoinApi);
+        }
+
         //Throws an exeption
         return;
       }
 
-    private:
+      inline void closeConnectionWithNode(){
+        bitcoinApi.stop();
+      }
+
+  private:
 
       RPCCommandMediator() : bitcoinApi(ConfiguratorSingleton::getInstance().getUser(),
                                         ConfiguratorSingleton::getInstance().getPassword(),
                                         ConfiguratorSingleton::getInstance().getHost(),
                                         ConfiguratorSingleton::getInstance().getPort()){}
 
+      //Commands
       DecodeScriptCommand decodeScript;
 
+      DecodeRawTransaction decodeRawTx;
+
+      //Bitcoin api
       BitcoinAPI bitcoinApi;
 
   };
