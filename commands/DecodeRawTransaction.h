@@ -10,6 +10,11 @@ namespace spyCBlockRPC
         public:
 
           void doCommand(WrapperInformations &wrapper, BitcoinAPI &bitcoinApi) override;
+
+          std::string toBtc(std::uint64_t &satoshi);
+
+        private:
+          const std::string HASH_COINBASE = "";
     };
 
 }

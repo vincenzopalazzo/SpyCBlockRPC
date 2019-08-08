@@ -40,8 +40,8 @@ TEST(serialization_mock_test, serialization_with_wrapper_mock)
     FAIL() << ex.getMessage();
   }
 
-
-  ASSERT_EQ(wrapper.getFromIdWallets().size(), 1); //Coinbase
+  EXPECT_EQ(wrapper.getToIdWallets().size(), 1);
+  EXPECT_EQ(wrapper.getFromIdWallets().size(), 1); //Coinbase
   ASSERT_EQ(wrapper.getFromIdWallets().at(0), "Coinbase");
   ASSERT_EQ(wrapper.getToIdWallets().at(0), "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa");
 

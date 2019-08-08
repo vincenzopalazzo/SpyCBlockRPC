@@ -45,8 +45,6 @@ TEST(decode_raw_transaction_test, execute_command_decode_raw_tx_coinbase)
     FAIL() << btcEx.getMessage();
   }
 
-  api.stop();
-
   ASSERT_EQ(wrapper.getTo(), "Coinbase");
 }
 
@@ -85,8 +83,6 @@ TEST(decode_script_command_test, decode_raw_tx_execute_command)
   } catch (BitcoinException btcEx) {
     FAIL() << btcEx.getMessage();
   }
-
-  api.stop();
 
   ASSERT_EQ(wrapper.getTo(), "47304402202c00cfb5a685527f40fa47c0f39b18205621b4702ee372a47f9d95fe82f5cf"
                              "75022002c857266fd7ade4e3d2723e620531fca8fe4d21cb796e302b98baef51cf9261"

@@ -44,8 +44,6 @@ TEST(decode_script_command_test, decode_script_execute_command_execute_decode_sc
     FAIL() << btcEx.getMessage();
   }
 
-  api.stop();
-
   ASSERT_EQ(wrapper.getToIdWallets().size(), 1);
   ASSERT_EQ(wrapper.getToIdWallets().at(0), "Coinbase");
   ASSERT_EQ(wrapper.getFromIdWallets().size(), 1);
@@ -89,8 +87,6 @@ TEST(decode_script_command_test, decode_script_execute_command_execute_another_t
     FAIL() << btcEx.getMessage();
   }
 
-  api.stop();
-
   ASSERT_EQ(wrapper.getToIdWallets().size(), 1);
   ASSERT_NE(find(wrapper.getToIdWallets().begin(), wrapper.getToIdWallets().end(), "175DUoF6XZXjNRqRu43c8JnENyKuE3fUnJ"), wrapper.getToIdWallets().end());
 //  /ASSERT_NE(find(wrapper.getToIdWallets().begin(), wrapper.getToIdWallets().end(), "1Peysn8vEPV1emkfRQ8rh3tiR1vDnb7Cxw"), wrapper.getToIdWallets().end());
@@ -133,8 +129,6 @@ TEST(decode_script_command_test, decode_script_execute_command)
   } catch (BitcoinException btcEx) {
     FAIL() << btcEx.getMessage();
   }
-
-  api.stop();
 
   ASSERT_EQ(wrapper.getTo(), "47304402202c00cfb5a685527f40fa47c0f39b18205621b4702ee372a47f9d95fe82f5cf"
                              "75022002c857266fd7ade4e3d2723e620531fca8fe4d21cb796e302b98baef51cf9261"
