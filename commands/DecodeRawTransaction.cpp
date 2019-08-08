@@ -24,19 +24,25 @@ void spyCBlockRPC::DecodeRawTransaction::doCommand(spyCBlockRPC::WrapperInformat
     uint64_t nOutpoint = wrapper.getNOutpoint();
     string btcValue = toBtc(nOutpoint);
     LOG(INFO) << "OutPoint I will find is: " << nOutpoint;
+    /*
     for(vout_t txOut : txRaw.vout)
     {
-      LOG(INFO) << "RPC value bitcoin -> " << txOut.value * 100000000;
+      LOG(INFO) << "RPC value bitcoin -> " << txOut.value;
+      LOG(INFO) << "RPC value converted bitcoin -> " << toSatoshi(txOut.value);
       LOG(INFO) << "WRAPPER value bitcoin -> " << nOutpoint;
-      if((txOut.value * 100000000) == nOutpoint)
+      if(toSatoshi(txOut.value) == static_cast<long>(nOutpoint))
       {
         LOG(WARNING) << "Findend transaction output";
         wrapper.setFrom(txOut.scriptPubKey.hex);
         break;
       }
-    }
+    }*/
+    vout_t txOut = txRaw.vout.at(nOutpoint);
+    LOG(ERROR) << "VALUE -> " << txOut.value;
+    wrapper.setFrom(txOut.scriptPubKey.hex);
    }
 }
+
 
 string spyCBlockRPC::DecodeRawTransaction::toBtc(uint64_t &satoshi)
 {
@@ -53,4 +59,9 @@ string spyCBlockRPC::DecodeRawTransaction::toBtc(uint64_t &satoshi)
     s.insert(s.length() - 8, 1, '.');
   }
   return s;
+}
+
+long spyCBlockRPC::DecodeRawTransaction::toSatoshi(double &btc)
+{
+  return btc * 100000000;
 }

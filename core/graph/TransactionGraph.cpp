@@ -41,7 +41,7 @@ void TransactionGraph::serialize(ofstream &stream)
               serializeTransaction += (delimitator + to.at(value));
             //}
             LOG(INFO) << serializeTransaction;
-            stream << serializeTransaction;
+            stream << serializeTransaction << "\n";
          }
       }
     }

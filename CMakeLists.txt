@@ -27,6 +27,7 @@ add_executable(
 
         commands/DecodeScriptCommand.cpp
         commands/DecodeRawTransaction.cpp
+        commands/HeightBlockchainCommand.cpp
 
         ConfiguratorSingleton.cpp
 
@@ -47,6 +48,7 @@ add_executable(
 
         commands/DecodeScriptCommand.cpp
         commands/DecodeRawTransaction.cpp
+        commands/HeightBlockchainCommand.cpp
 
         ConfiguratorSingleton.cpp
 

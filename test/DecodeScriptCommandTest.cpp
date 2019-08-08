@@ -67,8 +67,8 @@ TEST(decode_script_command_test, decode_script_execute_command_execute_another_t
   //https://blockstream.info/tx/bd28376c31d39233c7ab832515e1b68808678319232034bb5a98a997b05ae418
   //The previeus hash tx is get to this reference https://www.blockchain.com/btc/address/1Peysn8vEPV1emkfRQ8rh3tiR1vDnb7Cxw
   wrapper.setHashPreviousTx("e664f6a3197402534abc5b6d1d918dd6a3ba764f8defcc54ad386b71f7b0862a");
-  wrapper.setNOutpoint(558612);
-  wrapper.setFrom("a9149bf9d68af78d22c3040a4714c928c6ba9481519887");
+  wrapper.setNOutpoint(1);
+  wrapper.setTo("a9149bf9d68af78d22c3040a4714c928c6ba9481519887");
 
   vector<string> informations{"bd28376c31d39233c7ab832515e1b68808678319232034bb5a98a997b05ae418"};
   wrapper.setLinkInformations(informations);
@@ -88,10 +88,9 @@ TEST(decode_script_command_test, decode_script_execute_command_execute_another_t
   }
 
   ASSERT_EQ(wrapper.getToIdWallets().size(), 1);
-  ASSERT_NE(find(wrapper.getToIdWallets().begin(), wrapper.getToIdWallets().end(), "175DUoF6XZXjNRqRu43c8JnENyKuE3fUnJ"), wrapper.getToIdWallets().end());
-//  /ASSERT_NE(find(wrapper.getToIdWallets().begin(), wrapper.getToIdWallets().end(), "1Peysn8vEPV1emkfRQ8rh3tiR1vDnb7Cxw"), wrapper.getToIdWallets().end());
+  ASSERT_EQ(wrapper.getToIdWallets().at(0), "3FujxL6aYLU8KR9PHLaa7k51qBBdHnFRfi");
   ASSERT_EQ(wrapper.getFromIdWallets().size(), 1);
-  ASSERT_EQ(wrapper.getFromIdWallets().at(1), "3FujxL6aYLU8KR9PHLaa7k51qBBdHnFRfi");
+  ASSERT_EQ(wrapper.getFromIdWallets().at(0), "3Aj9iSzgxjdwTSyUDx8iQbuHtWhBud2GrD");
 }
 
 //This transaction is real because is my tx
@@ -110,8 +109,8 @@ TEST(decode_script_command_test, decode_script_execute_command)
   //https://blockstream.info/tx/bd28376c31d39233c7ab832515e1b68808678319232034bb5a98a997b05ae418
   //The previeus hash tx is get to this reference https://www.blockchain.com/btc/address/1Peysn8vEPV1emkfRQ8rh3tiR1vDnb7Cxw
   wrapper.setHashPreviousTx("e664f6a3197402534abc5b6d1d918dd6a3ba764f8defcc54ad386b71f7b0862a");
-  wrapper.setNOutpoint(558612);
-  wrapper.setFrom("a9149bf9d68af78d22c3040a4714c928c6ba9481519887");
+  wrapper.setNOutpoint(0);
+  wrapper.setTo("a9149bf9d68af78d22c3040a4714c928c6ba9481519887");
 
   vector<string> informations{"bd28376c31d39233c7ab832515e1b68808678319232034bb5a98a997b05ae418"};
   wrapper.setLinkInformations(informations);
@@ -130,7 +129,5 @@ TEST(decode_script_command_test, decode_script_execute_command)
     FAIL() << btcEx.getMessage();
   }
 
-  ASSERT_EQ(wrapper.getTo(), "47304402202c00cfb5a685527f40fa47c0f39b18205621b4702ee372a47f9d95fe82f5cf"
-                             "75022002c857266fd7ade4e3d2723e620531fca8fe4d21cb796e302b98baef51cf9261"
-                             "0121038aaca328c54797b9c18b020045105e64ee99d103a93f701ae30a39b20c217cec");
+  ASSERT_EQ(wrapper.getTo(), "a9149bf9d68af78d22c3040a4714c928c6ba9481519887");
 }
