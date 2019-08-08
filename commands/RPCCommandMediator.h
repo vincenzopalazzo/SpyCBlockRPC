@@ -9,6 +9,7 @@
 #include "IRPCCommand.h"
 #include "DecodeScriptCommand.h"
 #include "DecodeRawTransaction.h"
+#include "DecodeBlockAtIndexCommand.h"
 #include "../ConfiguratorSingleton.h"
 
 //TODO add an personal exception
@@ -21,6 +22,8 @@ namespace spyCBlockRPC
        const std::string DECODE_SCRIPT_COMMAND = "DECODE_SCRIPT_COMMAND";
 
        const std::string DECODE_RAW_TX_COMMAND = "DECODE_RAW_TX_COMMAND";
+
+       const std::string DECODE_BLOCKS_COMMAND = "DECODE_BLOCKS_COMMAND";
 
       inline static RPCCommandMediator& getInstance()
       {
@@ -46,6 +49,12 @@ namespace spyCBlockRPC
         if(keyCommand == DECODE_RAW_TX_COMMAND)
         {
           decodeRawTx.doCommand(wrapper, bitcoinApi);
+        }
+
+        if(keyCommand == DECODE_BLOCKS_COMMAND)
+        {
+          DecodeBlockAtIndexCommand decodeBlock;
+          decodeBlock.doCommand(wrapper, bitcoinApi);
         }
 
         //Throws an exeption

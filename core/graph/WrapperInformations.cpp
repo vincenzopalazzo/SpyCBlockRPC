@@ -84,3 +84,23 @@ void WrapperInformations::setNOutpoint(const uint64_t &value)
 {
     nOutpoint = value;
 }
+
+int WrapperInformations::getHeightBlockchain() const
+{
+    return heightBlockchain;
+}
+
+void WrapperInformations::setHeightBlockchain(int value)
+{
+    heightBlockchain = value;
+}
+
+int WrapperInformations::getStartBlock() const
+{
+    return startBlock;
+}
+
+void WrapperInformations::setStartBlock(int value)
+{
+    startBlock = value;
+}

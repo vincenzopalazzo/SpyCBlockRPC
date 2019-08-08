@@ -38,7 +38,7 @@ void spyCBlockRPC::DecodeRawTransaction::doCommand(spyCBlockRPC::WrapperInformat
       }
     }*/
     vout_t txOut = txRaw.vout.at(nOutpoint);
-    LOG(ERROR) << "VALUE -> " << txOut.value;
+    LOG(WARNING) << "VALUE -> " << txOut.value;
     wrapper.setFrom(txOut.scriptPubKey.hex);
    }
 }

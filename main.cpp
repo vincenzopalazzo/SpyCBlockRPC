@@ -1,59 +1,27 @@
 #include <iostream>
 #include <string>
-#include <experimental/filesystem>
-#include <PropertiesParser.h>
 #include <glog/logging.h>
 #include <bitcoinapi/bitcoinapi.h>
-#include "Properties.h"
 #include <fstream>
 
-using namespace std;
-using namespace cppproperties;
-string rootPath();
+#include "commands/RPCCommandMediator.h"
 
-const string SCRIPT_OUTPUT_GENESIS_BLOCK = "4104678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5fac";
-const string ORIGINAL_ADRESS = "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa";
+using namespace std;
+using namespace spyCBlockRPC;
 
 int main() {
-    google::InitGoogleLogging("0");
-    FLAGS_minloglevel = 0;
-    FLAGS_logtostderr = true;
+    google::InitGoogleLogging("2");
+    FLAGS_minloglevel = 2;
+    FLAGS_logtostderr = false;
 
-
-    Properties configuartion = PropertiesParser::Read(rootPath() + "/bitcoinrpc.properties");
-    LOG(INFO) << "The username of module rpc: "  << configuartion.GetProperty("user");
-    LOG(INFO) << "The password for the module rpc: " << configuartion.GetProperty("password");
-    LOG(INFO) << "The ip for the module rpc: " << configuartion.GetProperty("address");
-    LOG(INFO) << "The port for the module rpc: " << configuartion.GetProperty("port");
-
-    string user = configuartion.GetProperty("user");
-    string pass = configuartion.GetProperty("password");
-    string ip = configuartion.GetProperty("address");
-    int port = stoi(configuartion.GetProperty("port"));
-    LOG(INFO) << "The conversion to string into int " << configuartion.GetProperty("port") << "=" << port;
-
-    try{
-        BitcoinAPI btc(user, pass, ip, port);
-        int numbarBlock = btc.getblockcount();
-        LOG(WARNING) << "The height bitcoin-core is: " << numbarBlock;
-
-        string hashGenesisBlock = btc.getblockhash(0);
-        LOG(INFO) << "The hash genesis block is: " << hashGenesisBlock;
-
-        blockinfo_t block = btc.getblock(hashGenesisBlock);
-
-        //------ Test get script ------
-        decodescript_t script = btc.decodescript(SCRIPT_OUTPUT_GENESIS_BLOCK);
-        LOG(INFO) << "Numbar adredd into script: " << script.addresses.size();
-        LOG(INFO) << "First address is: " << script.addresses.at(0);
-        LOG(INFO) << "Is equal to " << ORIGINAL_ADRESS;
-
+    try
+    {
+      WrapperInformations wrapper;
+      wrapper.setDelimitator("|-|");
+      RPCCommandMediator::getInstance().doCommand(RPCCommandMediator::getInstance().DECODE_BLOCKS_COMMAND, wrapper);
     }catch (BitcoinException e){
-        LOG(ERROR) << "The exception generate is: " << e.what();
+        LOG(ERROR) << "The exception generate is: " << e.getMessage();
     }
     return 0;
 }
 
-string rootPath(){
-    return experimental::filesystem::current_path();
-}

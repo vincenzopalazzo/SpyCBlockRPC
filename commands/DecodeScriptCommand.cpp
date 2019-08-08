@@ -27,7 +27,7 @@ void DecodeScriptCommand::doCommand(WrapperInformations &wrapper, BitcoinAPI &bi
   {
     respose = bitcoinApi.decodescript(scriptSig);
     addressesInput = respose.addresses;
-    LOG(ERROR) << "P2P script inside the ScriptSing: " << respose.p2sh;
+    LOG(WARNING) << "P2P script inside the ScriptSing: " << respose.p2sh;
   }else{
       addressesInput = vector<string>{scriptSig};
   }

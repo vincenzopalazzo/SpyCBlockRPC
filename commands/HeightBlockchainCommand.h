@@ -1,11 +1,17 @@
 #ifndef HEIGHTBLOCKCHAINCOMMAND_H
 #define HEIGHTBLOCKCHAINCOMMAND_H
 
+#include "IRPCCommand.h"
 
-class HeightBlockchainCommand
-{
-public:
-  HeightBlockchainCommand();
-};
+namespace spyCBlockRPC{
+
+    class HeightBlockchainCommand : IRPCCommand
+    {
+        public:
+            void doCommand(WrapperInformations &wrapper, BitcoinAPI &bitcoinApi) override;
+    };
+
+}
+
 
 #endif // HEIGHTBLOCKCHAINCOMMAND_H

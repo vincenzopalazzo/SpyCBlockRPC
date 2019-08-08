@@ -43,6 +43,14 @@ namespace spyCBlockRPC {
 
             void setNOutpoint(const uint64_t &value);
 
+            int getHeightBlockchain() const;
+
+            void setHeightBlockchain(int value);
+
+            int getStartBlock() const;
+
+            void setStartBlock(int value);
+
     private:
 
             std:: string hashPreviousTx;
@@ -60,6 +68,10 @@ namespace spyCBlockRPC {
             std::vector<std::string> linkInformations;
 
             std::string delimitator;
+
+            int heightBlockchain = -1;
+
+            int startBlock = 1; //Because the RPC not considered the Gensis block
     };
 
 }
