@@ -22,7 +22,7 @@ TEST(serialization_mock_test, serialization_with_wrapper_mock)
   WrapperInformations wrapper;
   wrapper.setHashPreviousTx("0000000000000000000000000000000000000000000000000000000000000000");
   wrapper.setNOutpoint(5000000000);
-  wrapper.setTo("4104678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5fac");
+  wrapper.setFrom("4104678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5fac");
 
   vector<string> linkInformations;
   linkInformations.emplace_back("5000000000");
@@ -40,7 +40,7 @@ TEST(serialization_mock_test, serialization_with_wrapper_mock)
     FAIL() << ex.getMessage();
   }
 
-  EXPECT_EQ(wrapper.getToIdWallets().size(), 1);
+  EXPECT_EQ(wrapper.getFromIdWallets().size(), 1);
   EXPECT_EQ(wrapper.getFromIdWallets().size(), 1); //Coinbase
   ASSERT_EQ(wrapper.getFromIdWallets().at(0), "Coinbase");
   ASSERT_EQ(wrapper.getToIdWallets().at(0), "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa");

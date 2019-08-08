@@ -23,13 +23,14 @@ void DecodeScriptCommand::doCommand(WrapperInformations &wrapper, BitcoinAPI &bi
   decodescript_t respose;
   //The inpurt can be n and not one
   vector<string> addressesInput;
-  if(scriptSig == "Coinbase")
+  if(scriptSig != "Coinbase")
   {
     respose = bitcoinApi.decodescript(scriptSig);
     addressesInput = respose.addresses;
+    LOG(ERROR) << "P2P script inside the ScriptSing: " << respose.p2sh;
+  }else{
+      addressesInput = vector<string>{scriptSig};
   }
-
-  LOG(ERROR) << "P2P script inside the ScriptSing: " << respose.p2sh;
 
   LOG(INFO) << "The input address are: " << addressesInput.size();
   wrapper.setFromIdWallets(addressesInput);

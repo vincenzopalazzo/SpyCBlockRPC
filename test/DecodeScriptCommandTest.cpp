@@ -25,7 +25,7 @@ TEST(decode_script_command_test, decode_script_execute_command_execute_decode_sc
   //https://blockstream.info/tx/4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b
   wrapper.setHashPreviousTx("0000000000000000000000000000000000000000000000000000000000000000");
   wrapper.setNOutpoint(5000000000);
-  wrapper.setFrom("4104678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5fac");
+  wrapper.setTo("4104678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5fac");
 
   vector<string> informations{"4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"};
   wrapper.setLinkInformations(informations);
@@ -44,10 +44,10 @@ TEST(decode_script_command_test, decode_script_execute_command_execute_decode_sc
     FAIL() << btcEx.getMessage();
   }
 
-  ASSERT_EQ(wrapper.getToIdWallets().size(), 1);
-  ASSERT_EQ(wrapper.getToIdWallets().at(0), "Coinbase");
   ASSERT_EQ(wrapper.getFromIdWallets().size(), 1);
-  ASSERT_EQ(wrapper.getFromIdWallets().at(1), "	1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa");
+  ASSERT_EQ(wrapper.getFromIdWallets().at(0), "Coinbase");
+  ASSERT_EQ(wrapper.getToIdWallets().size(), 1);
+  ASSERT_EQ(wrapper.getToIdWallets().at(0), "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa");
   //Look the reference P2PK
 }
 
