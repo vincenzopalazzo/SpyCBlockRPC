@@ -21,8 +21,10 @@ void spyCBlockRPC::DecodeBlockAtIndexCommand::doCommand(spyCBlockRPC::WrapperInf
   int attualBlock = wrapper.getStartBlock();
   LOG(INFO) << "Attual block get information blockchain: " << attualBlock;
   ofstream stream(ConfiguratorSingleton::getInstance().getDirDatatest() + "/graph-to" + to_string(attualBlock) + "-from-" + to_string(attualBlock + 10));
-  for (int i = 0; i < (attualBlock + 10) && attualBlock <= height; i++)
+  int iteration = attualBlock + 10;
+  for (int i = 0; i < (iteration) && attualBlock <= height; i++)
   {
+      LOG(ERROR) << "Block numbar: " << attualBlock;
       string hash = bitcoinApi.getblockhash(attualBlock);
       LOG(INFO) << "hash is: " << hash;
 

@@ -20,7 +20,7 @@ void spyCBlockRPC::DecodeRawTransaction::doCommand(spyCBlockRPC::WrapperInformat
   {
     LOG(INFO) << "No coinbase transaction";
     getrawtransaction_t txInfo = bitcoinApi.getrawtransaction(hashPreviousTx, 1);
-    decoderawtransaction_t txRaw = bitcoinApi.decoderawtransaction(txInfo.hex);
+    //decoderawtransaction_t txRaw = bitcoinApi.decoderawtransaction(txInfo.hex); //TODO did not necessary
     uint64_t nOutpoint = wrapper.getNOutpoint();
     string btcValue = toBtc(nOutpoint);
     LOG(INFO) << "OutPoint I will find is: " << nOutpoint;
@@ -37,7 +37,7 @@ void spyCBlockRPC::DecodeRawTransaction::doCommand(spyCBlockRPC::WrapperInformat
         break;
       }
     }*/
-    vout_t txOut = txRaw.vout.at(nOutpoint);
+    vout_t txOut = txInfo.vout.at(nOutpoint);
     LOG(WARNING) << "VALUE -> " << txOut.value;
     wrapper.setFrom(txOut.scriptPubKey.hex);
    }
@@ -46,7 +46,7 @@ void spyCBlockRPC::DecodeRawTransaction::doCommand(spyCBlockRPC::WrapperInformat
 
 string spyCBlockRPC::DecodeRawTransaction::toBtc(uint64_t &satoshi)
 {
-  auto s = to_string(satoshi);
+  string s = to_string(satoshi);
 
   if (s.length() < 8) {
     // Prefix with 0s
