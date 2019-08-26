@@ -15,8 +15,6 @@ namespace spyCBlockRPC {
 
             virtual void buildTransaction(WrapperInformations &wrapper) = 0;
 
-            virtual void addLinkInformation(std::string &information) = 0;
-
     };
 
 }

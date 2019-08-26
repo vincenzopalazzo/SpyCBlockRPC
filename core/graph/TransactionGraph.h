@@ -16,8 +16,6 @@ namespace spyCBlockRPC {
 
           void buildTransaction(WrapperInformations &wrapper) override;
 
-          void addLinkInformation(std::string &information) override;
-
         private:
 
           std::vector<std::string> from;
