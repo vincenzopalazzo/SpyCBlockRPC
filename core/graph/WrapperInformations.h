@@ -23,6 +23,8 @@ namespace spyCBlockRPC {
 
             void setLinkInformations(const std::vector<std::string> &value);
 
+            void addInformationLink(const std::string &information);
+
             std::vector<std::string> getFromIdWallets() const;
 
             std::vector<std::string> getToIdWallets() const;

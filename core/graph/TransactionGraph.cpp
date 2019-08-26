@@ -70,3 +70,13 @@ void TransactionGraph::buildTransaction(WrapperInformations &wrapper)
   this->linkInformations = wrapper.getLinkInformations();
   LOG(INFO) << "Numbar information link: " << linkInformations.size();
 }
+
+void TransactionGraph::addLinkInformation(string &information)
+{
+  if(information.empty())
+  {
+      LOG(ERROR) << "Information empty, information not valid";
+      return; //try to throws an exception
+  }
+  this->linkInformations.emplace_back(information);
+}

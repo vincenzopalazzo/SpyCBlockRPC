@@ -24,11 +24,9 @@ TEST(serialization_mock_test, serialization_with_wrapper_mock)
   wrapper.setNOutpoint(0);
   wrapper.setTo("4104678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5fac");
 
-  vector<string> linkInformations;
-  linkInformations.emplace_back("5000000000");
-  linkInformations.emplace_back("4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b");
-  linkInformations.emplace_back("1231006505");
-  wrapper.setLinkInformations(linkInformations);
+  wrapper.addInformationLink("5000000000");
+  wrapper.addInformationLink("4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b");
+  wrapper.addInformationLink("1231006505");
 
   wrapper.setDelimitator("|");
 
@@ -71,11 +69,9 @@ TEST(serialization_mock_test, witness_serialization_many_to_may_adress_wrapper_m
 
   wrapper.setTo("76a914cfe29ef5b750cdf45ea3e148f3a607a2ae3fd7df88ac");
 
-  vector<string> linkInformations;
-  linkInformations.emplace_back("1175411976");
-  linkInformations.emplace_back("056d8c9f0c9cc0ba0aad4facc0eb72b985fada892d6b3689107f3153d0b7b177");
-  linkInformations.emplace_back("1231006505");
-  wrapper.setLinkInformations(linkInformations);
+  wrapper.addInformationLink("1175411976");
+  wrapper.addInformationLink("056d8c9f0c9cc0ba0aad4facc0eb72b985fada892d6b3689107f3153d0b7b177");
+  wrapper.addInformationLink("1231006505");
 
   wrapper.setDelimitator(" ");
 
@@ -114,11 +110,9 @@ TEST(serialization_mock_test, witness_serialization_many_to_may_adress_wrapper_m
 
   wrapper.setTo("76a914cfe29ef5b750cdf45ea3e148f3a607a2ae3fd7df88ac");
 
-  vector<string> linkInformations;
-  linkInformations.emplace_back("1175411976");
-  linkInformations.emplace_back("056d8c9f0c9cc0ba0aad4facc0eb72b985fada892d6b3689107f3153d0b7b177");
-  linkInformations.emplace_back("1231006505");
-  wrapper.setLinkInformations(linkInformations);
+  wrapper.addInformationLink("1175411976");
+  wrapper.addInformationLink("056d8c9f0c9cc0ba0aad4facc0eb72b985fada892d6b3689107f3153d0b7b177");
+  wrapper.addInformationLink("1231006505");
 
   wrapper.setDelimitator("|");
 
@@ -142,7 +136,7 @@ TEST(serialization_mock_test, witness_serialization_many_to_may_adress_wrapper_m
   wrapper.setNOutpoint(0);
   wrapper.setTo("4104678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5fac");
 
-  linkInformations.clear();
+  vector<string> linkInformations;
   linkInformations.emplace_back("5000000000");
   linkInformations.emplace_back("4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b");
   linkInformations.emplace_back("1231006505");

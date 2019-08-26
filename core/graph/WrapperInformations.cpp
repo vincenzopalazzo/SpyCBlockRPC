@@ -1,10 +1,24 @@
+#include <glog/logging.h>
+
 #include "WrapperInformations.h"
 
 using namespace spyCBlockRPC;
 using namespace std;
 
-//getter and setter
 
+
+void WrapperInformations::addInformationLink(const string &information)
+{
+  if(information.empty())
+  {
+    LOG(ERROR) << "Information empty";
+    return; //TODO throws exception
+  }
+
+  this->linkInformations.emplace_back(information);
+}
+
+//getter and setter
 std::string WrapperInformations::getFrom() const
 {
     return from;
@@ -32,7 +46,7 @@ std::vector<std::string> WrapperInformations::getLinkInformations() const
 
 void WrapperInformations::setLinkInformations(const std::vector<std::string> &value)
 {
-    linkInformations = value;
+  linkInformations = value;
 }
 
 std::vector<std::string> WrapperInformations::getFromIdWallets() const
