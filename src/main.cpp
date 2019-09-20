@@ -16,9 +16,12 @@ int main() {
 
     try
     {
+
       WrapperInformations wrapper;
       wrapper.setDelimitator("|-|");
+
       RPCCommandMediator::getInstance().doCommand(RPCCommandMediator::getInstance().DECODE_BLOCKS_COMMAND, wrapper);
+
     }catch (BitcoinException e){
         LOG(ERROR) << "The exception generate is: " << e.getMessage();
     }

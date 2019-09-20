@@ -22,17 +22,17 @@ add_executable(
         lib/cpp-properties/src/PropertiesParser.cpp
         lib/cpp-properties/src/PropertiesUtils.cpp
 
-        core/graph/TransactionGraph.cpp
-        core/graph/WrapperInformations.cpp
+        src/core/graph/TransactionGraph.cpp
+        src/core/graph/WrapperInformations.cpp
 
-        commands/DecodeScriptCommand.cpp
-        commands/DecodeRawTransaction.cpp
-        commands/HeightBlockchainCommand.cpp
-        commands/DecodeBlockAtIndexCommand.cpp
+        src/commands/DecodeScriptCommand.cpp
+        src/commands/DecodeRawTransaction.cpp
+        src/commands/HeightBlockchainCommand.cpp
+        src/commands/DecodeBlockAtIndexCommand.cpp
 
-        ConfiguratorSingleton.cpp
+        src/ConfiguratorSingleton.cpp
 
-        main.cpp
+        src/main.cpp
 )
 
 add_executable(
@@ -44,15 +44,15 @@ add_executable(
         lib/cpp-properties/src/PropertiesParser.cpp
         lib/cpp-properties/src/PropertiesUtils.cpp
 
-        core/graph/TransactionGraph.cpp
-        core/graph/WrapperInformations.cpp
+        src/core/graph/TransactionGraph.cpp
+        src/core/graph/WrapperInformations.cpp
 
-        commands/DecodeScriptCommand.cpp
-        commands/DecodeRawTransaction.cpp
-        commands/HeightBlockchainCommand.cpp
-        commands/DecodeBlockAtIndexCommand.cpp
+        src/commands/DecodeScriptCommand.cpp
+        src/commands/DecodeRawTransaction.cpp
+        src/commands/HeightBlockchainCommand.cpp
+        src/commands/DecodeBlockAtIndexCommand.cpp
 
-        ConfiguratorSingleton.cpp
+        src/ConfiguratorSingleton.cpp
 
 
         #Test

@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 #include <glog/logging.h>
 
-#include "../core/graph/ITransactionGraph.h"
-#include "../core/graph/TransactionGraph.h"
-#include "../core/graph/WrapperInformations.h"
-#include "../ConfiguratorSingleton.h"
-#include "../commands/DecodeScriptCommand.h"
+#include "../src/core/graph/ITransactionGraph.h"
+#include "../src/core/graph/TransactionGraph.h"
+#include "../src/core/graph/WrapperInformations.h"
+#include "../src/ConfiguratorSingleton.h"
+#include "../src/commands/DecodeScriptCommand.h"
 
 using namespace spyCBlockRPC;
 using namespace std;

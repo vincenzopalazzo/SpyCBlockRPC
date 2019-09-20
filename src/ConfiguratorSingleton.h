@@ -6,8 +6,8 @@
 
 #include <bitcoinapi/bitcoinapi.h>
 
-#include "lib/cpp-properties/include/Properties.h"
-#include "lib/cpp-properties/include/PropertiesParser.h"
+#include "../lib/cpp-properties/include/Properties.h"
+#include "../lib/cpp-properties/include/PropertiesParser.h"
 
 namespace spyCBlockRPC {
 

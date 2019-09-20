@@ -21,7 +21,7 @@ void spyCBlockRPC::DecodeBlockAtIndexCommand::doCommand(spyCBlockRPC::WrapperInf
   int attualBlock = wrapper.getStartBlock();
   LOG(INFO) << "Attual block get information blockchain: " << attualBlock;
   ofstream stream(ConfiguratorSingleton::getInstance().getDirDatatest() + "/graph-to" + to_string(attualBlock) + "-from-" + to_string(attualBlock + 10));
-  int iteration = attualBlock + 10;
+  int iteration = attualBlock + 119972;
   for (int i = 0; i < (iteration) && attualBlock <= height; i++)
   {
       LOG(ERROR) << "Block numbar: " << attualBlock;
@@ -35,8 +35,6 @@ void spyCBlockRPC::DecodeBlockAtIndexCommand::doCommand(spyCBlockRPC::WrapperInf
           LOG(INFO) << "Hash is: " << hashTxId;
           getrawtransaction_t rawTx = bitcoinApi.getrawtransaction(hashTxId, 10);
 
-          //decoderawtransaction_t decodeRaw = bitcoinApi.decoderawtransaction(rawTx.hex);
-
           vector<string> informationsLink;
 
           informationsLink.emplace_back(hash);
@@ -44,7 +42,7 @@ void spyCBlockRPC::DecodeBlockAtIndexCommand::doCommand(spyCBlockRPC::WrapperInf
 
           if(rawTx.vin.size() > 1 && rawTx.vout.size() > 1)
           {
-            informationsLink.emplace_back("isManyToMny");
+            informationsLink.emplace_back("isManyToMany");
           }
 
           for(vin_t txIn : rawTx.vin)
