@@ -1,3 +1,7 @@
+// Copyright (c) 2018-2019 Vincenzo Palazzo vicenzopalazzodev@gmail.com
+// Distributed under the Apache License Version 2.0 software license,
+// see https://www.apache.org/licenses/LICENSE-2.0.txt
+
 #include <glog/logging.h>
 
 #include "TransactionGraph.h"
@@ -7,6 +11,9 @@
 using namespace std;
 using namespace spyCBlockRPC;
 
+TransactionGraph::TransactionGraph() : ITransactionGraph()
+{}
+
 //TODO test this informations
 void TransactionGraph::serialize(ofstream &stream)
 {
@@ -14,37 +21,32 @@ void TransactionGraph::serialize(ofstream &stream)
   //Not serialize the transaction many to many
   if(this->to.size() == 1 || this->from.size() == 1)
   {
-    string serializeTransaction;
-       //Serialization informations input
-       for(int i = 0; i < static_cast<int>(this->from.size()); i++)
-       {
-         unsigned long value = static_cast<unsigned long>(i);
-         //if(value == this->from.size() - 1)
-         //{
-          // serializeTransaction += from.at(value);
-         //}else{
-           serializeTransaction += from.at(value);
-         //}
-         //Serialization information link
-         for(string &information: this->linkInformations)
-         {
-           serializeTransaction += (delimitator + information);
-         }
-         //serializzation information output
-         for(int i = 0; i < static_cast<int>(this->to.size()); i++)
-         {
-            unsigned long value = static_cast<unsigned long>(i);
-            //if(value == this->from.size() - 1)
-            //{
-             // serializeTransaction += from.at(value);
-           // }else{
-              serializeTransaction += (delimitator + to.at(value));
-            //}
-            LOG(INFO) << serializeTransaction;
-            stream << serializeTransaction << "\n";
-         }
+      string serializeTransaction;
+
+      //Serialization informations input
+      for(auto valueFrom : this->from)
+      {
+         serializeTransaction += valueFrom;
       }
-    }
+
+      //
+      //Serialization information link
+      //
+      for (auto iterator = linkInformations.begin(); iterator != linkInformations.end();  ++iterator)
+      {
+        serializeTransaction += (delimitator + *iterator);
+      }
+
+      //
+      //serializzation information output
+      //
+      for(auto value : this->to)
+      {
+         serializeTransaction += (delimitator +(value));
+         LOG(INFO) << serializeTransaction;
+         stream << serializeTransaction << "\n";
+       }
+     }
 }
 
 void TransactionGraph::buildTransaction(WrapperInformations &wrapper)

@@ -1,3 +1,7 @@
+// Copyright (c) 2018-2019 Vincenzo Palazzo vicenzopalazzodev@gmail.com
+// Distributed under the Apache License Version 2.0 software license,
+// see https://www.apache.org/licenses/LICENSE-2.0.txt
+
 #include <glog/logging.h>
 
 #include "WrapperInformations.h"
@@ -14,8 +18,7 @@ void WrapperInformations::addInformationLink(const string &information)
     LOG(ERROR) << "Information empty";
     return; //TODO throws exception
   }
-
-  this->linkInformations.emplace_back(information);
+  this->linkInformations.insert(information);
 }
 
 //getter and setter
@@ -39,12 +42,12 @@ void WrapperInformations::setTo(const std::string &value)
     to = value;
 }
 
-std::vector<std::string> WrapperInformations::getLinkInformations() const
+std::set<std::string> WrapperInformations::getLinkInformations() const
 {
     return linkInformations;
 }
 
-void WrapperInformations::setLinkInformations(const std::vector<std::string> &value)
+void WrapperInformations::setLinkInformations(const std::set<std::string> &value)
 {
   linkInformations = value;
 }
@@ -116,5 +119,13 @@ int WrapperInformations::getStartBlock() const
 
 void WrapperInformations::setStartBlock(int value)
 {
-    startBlock = value;
+  startBlock = value;
+}
+
+void WrapperInformations::clean()
+{
+  //Swap the vectors.
+  this->linkInformations.clear();
+  this->toIdWallets.clear();
+  this->fromIdWallets.clear();
 }

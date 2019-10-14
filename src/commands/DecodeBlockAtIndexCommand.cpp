@@ -1,3 +1,7 @@
+// Copyright (c) 2018-2019 Vincenzo Palazzo vicenzopalazzodev@gmail.com
+// Distributed under the Apache License Version 2.0 software license,
+// see https://www.apache.org/licenses/LICENSE-2.0.txt
+
 #include <fstream>
 
 #include <glog/logging.h>
@@ -10,6 +14,9 @@
 
 using namespace std;
 
+//
+// This command is only used inside the main, for simple testing and a simple demo
+//
 void spyCBlockRPC::DecodeBlockAtIndexCommand::doCommand(spyCBlockRPC::WrapperInformations &wrapper, BitcoinAPI &bitcoinApi)
 {
   HeightBlockchainCommand heightCommand;
@@ -18,14 +25,14 @@ void spyCBlockRPC::DecodeBlockAtIndexCommand::doCommand(spyCBlockRPC::WrapperInf
   int height = wrapper.getHeightBlockchain();
   LOG_IF(ERROR, height == -1) << "Height blockchain not inizializate";
 
-  int attualBlock = wrapper.getStartBlock();
-  LOG(INFO) << "Attual block get information blockchain: " << attualBlock;
-  ofstream stream(ConfiguratorSingleton::getInstance().getDirDatatest() + "/graph-to" + to_string(attualBlock) + "-from-" + to_string(attualBlock + 10));
-  int iteration = attualBlock + 119972;
-  for (int i = 0; i < (iteration) && attualBlock <= height; i++)
+  int actualBlock = wrapper.getStartBlock();
+  LOG(INFO) << "Attual block get information blockchain: " << actualBlock;
+  ofstream stream(ConfiguratorSingleton::getInstance().getDirDatatest() + "/graph-to" + to_string(actualBlock) + "-from-" + to_string(actualBlock + 10));
+  int saveActualValue = actualBlock;
+  for (int i = 0; i < saveActualValue + 100; i++)
   {
-      LOG(ERROR) << "Block numbar: " << attualBlock;
-      string hash = bitcoinApi.getblockhash(attualBlock);
+      LOG(ERROR) << "Block numbar: " << actualBlock;
+      string hash = bitcoinApi.getblockhash(actualBlock);
       LOG(INFO) << "hash is: " << hash;
 
       blockinfo_t block = bitcoinApi.getblock(hash);
@@ -37,12 +44,11 @@ void spyCBlockRPC::DecodeBlockAtIndexCommand::doCommand(spyCBlockRPC::WrapperInf
 
           vector<string> informationsLink;
 
-          informationsLink.emplace_back(hash);
-          informationsLink.emplace_back(hashTxId);
+           wrapper.addInformationLink("Block hash:" + hash);
+           wrapper.addInformationLink("Transaction hash: " + hashTxId);
 
-          if(rawTx.vin.size() > 1 && rawTx.vout.size() > 1)
-          {
-            informationsLink.emplace_back("isManyToMany");
+          if(rawTx.vin.size() > 1 && rawTx.vout.size() > 1){
+             wrapper.addInformationLink("isManyToMany");
           }
 
           for(vin_t txIn : rawTx.vin)
@@ -61,25 +67,24 @@ void spyCBlockRPC::DecodeBlockAtIndexCommand::doCommand(spyCBlockRPC::WrapperInf
 
               for (vout_t txOut : rawTx.vout)
               {
-                  LOG(INFO) << "Script output hex: " << txOut.scriptPubKey.hex;
+                LOG(INFO) << "Script output hex: " << txOut.scriptPubKey.hex;
                 wrapper.setTo(txOut.scriptPubKey.hex);
-                informationsLink.emplace_back(to_string(txOut.value));
+                wrapper.addInformationLink(to_string(txOut.value));
 
-                informationsLink.emplace_back(to_string(rawTx.time));
-
-                wrapper.setLinkInformations(informationsLink);
+                wrapper.addInformationLink(to_string(rawTx.time));
 
                 TransactionGraph transactionGraph;
 
                 transactionGraph.buildTransaction(wrapper);
 
                 transactionGraph.serialize(stream);
+                wrapper.clean();
 
               }
           }
 
-      }
+          wrapper.setStartBlock(actualBlock++);
 
-      wrapper.setStartBlock(attualBlock++);
+      }
     }
 }

@@ -1,3 +1,7 @@
+// Copyright (c) 2018-2019 Vincenzo Palazzo vicenzopalazzodev@gmail.com
+// Distributed under the Apache License Version 2.0 software license,
+// see https://www.apache.org/licenses/LICENSE-2.0.txt
+
 #include <glog/logging.h>
 
 #include "DecodeRawTransaction.h"
@@ -9,34 +13,18 @@ void spyCBlockRPC::DecodeRawTransaction::doCommand(spyCBlockRPC::WrapperInformat
   string hashPreviousTx = wrapper.getHashPreviousTx();
   LOG(INFO) << "The previus hash is: " << hashPreviousTx;
   bool coinbase = false;
-  if(hashPreviousTx == HASH_COINBASE)
-  {
+  if(hashPreviousTx == HASH_COINBASE){
     coinbase = true;
     LOG(INFO) << "Coinbase transaction";
     wrapper.setFrom("Coinbase");
   }
 
-  if(!coinbase)
-  {
+  if(!coinbase){
     LOG(INFO) << "No coinbase transaction";
-    getrawtransaction_t txInfo = bitcoinApi.getrawtransaction(hashPreviousTx, 1);
-    //decoderawtransaction_t txRaw = bitcoinApi.decoderawtransaction(txInfo.hex); //TODO did not necessary
+    getrawtransaction_t txInfo = bitcoinApi.getrawtransaction(hashPreviousTx, 1); // the 1 number is for create an verbose result.
     uint64_t nOutpoint = wrapper.getNOutpoint();
     string btcValue = toBtc(nOutpoint);
     LOG(INFO) << "OutPoint I will find is: " << nOutpoint;
-    /*
-    for(vout_t txOut : txRaw.vout)
-    {
-      LOG(INFO) << "RPC value bitcoin -> " << txOut.value;
-      LOG(INFO) << "RPC value converted bitcoin -> " << toSatoshi(txOut.value);
-      LOG(INFO) << "WRAPPER value bitcoin -> " << nOutpoint;
-      if(toSatoshi(txOut.value) == static_cast<long>(nOutpoint))
-      {
-        LOG(WARNING) << "Findend transaction output";
-        wrapper.setFrom(txOut.scriptPubKey.hex);
-        break;
-      }
-    }*/
     vout_t txOut = txInfo.vout.at(nOutpoint);
     LOG(WARNING) << "VALUE -> " << txOut.value;
     wrapper.setFrom(txOut.scriptPubKey.hex);
@@ -63,5 +51,5 @@ string spyCBlockRPC::DecodeRawTransaction::toBtc(uint64_t &satoshi)
 
 long spyCBlockRPC::DecodeRawTransaction::toSatoshi(double &btc)
 {
-  return btc * 100000000;
+  return static_cast<long>(btc * 100000000);
 }

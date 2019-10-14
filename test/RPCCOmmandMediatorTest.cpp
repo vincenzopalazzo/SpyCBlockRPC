@@ -1,3 +1,7 @@
+// Copyright (c) 2018-2019 Vincenzo Palazzo vicenzopalazzodev@gmail.com
+// Distributed under the Apache License Version 2.0 software license,
+// see https://www.apache.org/licenses/LICENSE-2.0.txt
+
 #include <gtest/gtest.h>
 #include <glog/logging.h>
 
@@ -27,8 +31,7 @@ TEST(rpc_command_mediator_test, execute_command_decode_script)
   wrapper.setNOutpoint(5000000000);
   wrapper.setTo("4104678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5fac");
 
-  vector<string> informations{"4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"};
-  wrapper.setLinkInformations(informations);
+   wrapper.addInformationLink("4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b");
 
   try
   {
@@ -62,8 +65,7 @@ TEST(rpc_command_mediator_test, execute_command_decode_script_another_tx_one_to_
   wrapper.setNOutpoint(1);
   wrapper.setTo("76a91489262d384fca614ae2277d39e9f6627755852d1088ac");
 
-  vector<string> informations{"09e52c808a340a7ab9e1d7464186d0e769edde1cd8fc25e210848e5d467cf2b0"};
-  wrapper.setLinkInformations(informations);
+  wrapper.addInformationLink("09e52c808a340a7ab9e1d7464186d0e769edde1cd8fc25e210848e5d467cf2b0");
 
   try
   {
@@ -98,8 +100,7 @@ TEST(rpc_command_mediator_test, execute_command_decode_raw_tx_many_to_one)
   wrapper.setNOutpoint(0);
   wrapper.setTo("a9149bf9d68af78d22c3040a4714c928c6ba9481519887");
 
-  vector<string> informations{"bd28376c31d39233c7ab832515e1b68808678319232034bb5a98a997b05ae418"};
-  wrapper.setLinkInformations(informations);
+  wrapper.addInformationLink("bd28376c31d39233c7ab832515e1b68808678319232034bb5a98a997b05ae418");
 
   try
   {
@@ -129,8 +130,7 @@ TEST(rpc_command_mediator_test, execute_command_decode_raw_tx_coinbase_two_many_
   wrapper.setHashPreviousTx("e664f6a3197402534abc5b6d1d918dd6a3ba764f8defcc54ad386b71f7b0862a");
   wrapper.setNOutpoint(1);
 
-  vector<string> informations{"bd28376c31d39233c7ab832515e1b68808678319232034bb5a98a997b05ae418"};
-  wrapper.setLinkInformations(informations);
+  wrapper.addInformationLink("bd28376c31d39233c7ab832515e1b68808678319232034bb5a98a997b05ae418");
 
   try
   {
