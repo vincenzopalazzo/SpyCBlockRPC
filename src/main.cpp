@@ -1,3 +1,7 @@
+// Copyright (c) 2018-2019 Vincenzo Palazzo vicenzopalazzodev@gmail.com
+// Distributed under the Apache License Version 2.0 software license,
+// see https://www.apache.org/licenses/LICENSE-2.0.txt
+
 #include <iostream>
 #include <string>
 #include <glog/logging.h>
@@ -24,7 +28,8 @@ int main() {
 
     }catch (BitcoinException e){
         LOG(ERROR) << "The exception generate is: " << e.getMessage();
+        return EXIT_FAILURE;
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 

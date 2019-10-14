@@ -1,3 +1,7 @@
+// Copyright (c) 2018-2019 Vincenzo Palazzo vicenzopalazzodev@gmail.com
+// Distributed under the Apache License Version 2.0 software license,
+// see https://www.apache.org/licenses/LICENSE-2.0.tx
+
 #ifndef TRANSACTIONGRAPH_H
 #define TRANSACTIONGRAPH_H
 
@@ -6,11 +10,13 @@
 
 #include "ITransactionGraph.h"
 
-namespace spyCBlockRPC {
-
-    class TransactionGraph : ITransactionGraph
+namespace spyCBlockRPC
+{
+    class TransactionGraph : public ITransactionGraph
     {
         public:
+
+          TransactionGraph();
 
           void serialize(std::ofstream &stream) override;
 
@@ -22,7 +28,7 @@ namespace spyCBlockRPC {
 
           std::vector<std::string> to;
 
-          std::vector<std::string> linkInformations;
+          std::set<std::string> linkInformations;
 
           std::string delimitator;
 

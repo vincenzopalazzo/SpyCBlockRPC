@@ -1,3 +1,7 @@
+// Copyright (c) 2018-2019 Vincenzo Palazzo vicenzopalazzodev@gmail.com
+// Distributed under the Apache License Version 2.0 software license,
+// see https://www.apache.org/licenses/LICENSE-2.0.txt
+
 #include <gtest/gtest.h>
 #include <glog/logging.h>
 
@@ -27,8 +31,7 @@ TEST(decode_script_command_test, decode_script_execute_command_execute_decode_sc
   wrapper.setNOutpoint(5000000000);
   wrapper.setTo("4104678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5fac");
 
-  vector<string> informations{"4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"};
-  wrapper.setLinkInformations(informations);
+  wrapper.addInformationLink("4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b");
 
   BitcoinAPI api(ConfiguratorSingleton::getInstance().getUser(),
                        ConfiguratorSingleton::getInstance().getPassword(),
@@ -70,8 +73,7 @@ TEST(decode_script_command_test, decode_script_execute_command_execute_another_t
   wrapper.setNOutpoint(1);
   wrapper.setTo("a9149bf9d68af78d22c3040a4714c928c6ba9481519887");
 
-  vector<string> informations{"bd28376c31d39233c7ab832515e1b68808678319232034bb5a98a997b05ae418"};
-  wrapper.setLinkInformations(informations);
+  wrapper.addInformationLink("bd28376c31d39233c7ab832515e1b68808678319232034bb5a98a997b05ae418");
 
   BitcoinAPI api(ConfiguratorSingleton::getInstance().getUser(),
                        ConfiguratorSingleton::getInstance().getPassword(),
@@ -112,8 +114,7 @@ TEST(decode_script_command_test, decode_script_execute_command)
   wrapper.setNOutpoint(0);
   wrapper.setTo("a9149bf9d68af78d22c3040a4714c928c6ba9481519887");
 
-  vector<string> informations{"bd28376c31d39233c7ab832515e1b68808678319232034bb5a98a997b05ae418"};
-  wrapper.setLinkInformations(informations);
+  wrapper.addInformationLink("bd28376c31d39233c7ab832515e1b68808678319232034bb5a98a997b05ae418");
 
   BitcoinAPI api(ConfiguratorSingleton::getInstance().getUser(),
                        ConfiguratorSingleton::getInstance().getPassword(),

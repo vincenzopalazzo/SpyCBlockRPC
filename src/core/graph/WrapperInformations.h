@@ -1,11 +1,16 @@
+// Copyright (c) 2018-2019 Vincenzo Palazzo vicenzopalazzodev@gmail.com
+// Distributed under the Apache License Version 2.0 software license,
+// see https://www.apache.org/licenses/LICENSE-2.0.tx
+
 #ifndef WRAPPERINFORMATIONS_H
 #define WRAPPERINFORMATIONS_H
 
-#include<string>
+#include <string>
 #include <vector>
+#include <set>
 
-namespace spyCBlockRPC {
-
+namespace spyCBlockRPC
+{
     class WrapperInformations
     {
 
@@ -19,9 +24,9 @@ namespace spyCBlockRPC {
 
             void setTo(const std::string &value);
 
-            std::vector<std::string> getLinkInformations() const;
+            std::set<std::string> getLinkInformations() const;
 
-            void setLinkInformations(const std::vector<std::string> &value);
+            void setLinkInformations(const std::set<std::string> &value);
 
             void addInformationLink(const std::string &information);
 
@@ -53,6 +58,8 @@ namespace spyCBlockRPC {
 
             void setStartBlock(int value);
 
+            void clean();
+
     private:
 
             std:: string hashPreviousTx;
@@ -67,7 +74,7 @@ namespace spyCBlockRPC {
 
             std::vector<std::string> toIdWallets;
 
-            std::vector<std::string> linkInformations;
+            std::set<std::string> linkInformations;
 
             std::string delimitator;
 
