@@ -11,6 +11,7 @@
 #include "HeightBlockchainCommand.h"
 #include "../ConfiguratorSingleton.h"
 #include "../core/graph/TransactionGraph.h"
+#include "../SpyCBlockRPCException.h"
 
 using namespace std;
 
@@ -19,6 +20,7 @@ using namespace std;
 //
 void spyCBlockRPC::DecodeBlockAtIndexCommand::doCommand(spyCBlockRPC::WrapperInformations &wrapper, BitcoinAPI &bitcoinApi)
 {
+
   HeightBlockchainCommand heightCommand;
   heightCommand.doCommand(wrapper, bitcoinApi);
 
@@ -27,64 +29,84 @@ void spyCBlockRPC::DecodeBlockAtIndexCommand::doCommand(spyCBlockRPC::WrapperInf
 
   int actualBlock = wrapper.getStartBlock();
   LOG(INFO) << "Attual block get information blockchain: " << actualBlock;
-  ofstream stream(ConfiguratorSingleton::getInstance().getDirDatatest() + "/graph-to" + to_string(actualBlock) + "-from-" + to_string(actualBlock + 10));
-  int saveActualValue = actualBlock;
-  for (int i = 0; i < saveActualValue + 100; i++)
-  {
-      LOG(ERROR) << "Block numbar: " << actualBlock;
-      string hash = bitcoinApi.getblockhash(actualBlock);
-      LOG(INFO) << "hash is: " << hash;
+  //ofstream stream(ConfiguratorSingleton::getInstance().getDirDatatest() + "/graph-to" + to_string(actualBlock) + "-from-" + to_string(actualBlock + 10));
+  int fileIndex = 0;
+  ofstream stream(ConfiguratorSingleton::getInstance().getDirDatatest() + "address-tx-"+ to_string(fileIndex) + ".txt");
+  //int saveActualValue = actualBlock;
+  int blocksReaded = 0;
+  int limit = 20000;
+  //for (int i = 0; i < saveActualValue + 100; i++)
+  try {
 
-      blockinfo_t block = bitcoinApi.getblock(hash);
+    while(blocksReaded < height)
+    {
+        if(blocksReaded == limit){
+          LOG(ERROR) << "Hit limit " << limit;
+          limit *= 2;
+          LOG(ERROR) << "Now limit is " << limit;
+          fileIndex++;
+          stream.close();
+          stream.open(ConfiguratorSingleton::getInstance().getDirDatatest() + "address-tx-"+ to_string(fileIndex) + ".txt");
+        }
+        LOG(WARNING) << "Block numbar: " << actualBlock;
+        string hash = bitcoinApi.getblockhash(actualBlock);
+        LOG(INFO) << "hash is: " << hash;
 
-      for(string &hashTxId : block.tx)
-      {
-          LOG(INFO) << "Hash is: " << hashTxId;
-          getrawtransaction_t rawTx = bitcoinApi.getrawtransaction(hashTxId, 10);
+        blockinfo_t block = bitcoinApi.getblock(hash);
 
-          vector<string> informationsLink;
+        for(string &hashTxId : block.tx)
+        {
+            LOG(INFO) << "Hash is: " << hashTxId;
+            getrawtransaction_t rawTx = bitcoinApi.getrawtransaction(hashTxId, 10);
 
-           wrapper.addInformationLink("Block hash:" + hash);
-           wrapper.addInformationLink("Transaction hash: " + hashTxId);
+            vector<string> informationsLink;
 
-          if(rawTx.vin.size() > 1 && rawTx.vout.size() > 1){
-             wrapper.addInformationLink("isManyToMany");
-          }
+             wrapper.addInformationLink("Block hash:" + hash);
+             wrapper.addInformationLink("Transaction hash: " + hashTxId);
 
-          for(vin_t txIn : rawTx.vin)
-          {
-              LOG(INFO) << "Hash txInput " << txIn.txid;
-              if(txIn.txid.empty()){
-                  LOG(INFO) << "Coinbase tx";
-                  wrapper.setHashPreviousTx("0000000000000000000000000000000000000000000000000000000000000000");
-              }else{
-                  LOG(INFO) << "Not coinbase tx";
-                  wrapper.setHashPreviousTx(txIn.txid);
-              }
+            if(rawTx.vin.size() > 1 && rawTx.vout.size() > 1){
+               wrapper.addInformationLink("isManyToMany");
+            }
 
-              LOG(INFO) << "Index txInput " << txIn.n;
-              wrapper.setNOutpoint(txIn.n);
+            for(vin_t txIn : rawTx.vin)
+            {
+                LOG(INFO) << "Hash txInput " << txIn.txid;
+                if(txIn.txid.empty()){
+                    LOG(INFO) << "Coinbase tx";
+                    wrapper.setHashPreviousTx("0000000000000000000000000000000000000000000000000000000000000000");
+                }else{
+                    LOG(INFO) << "Not coinbase tx";
+                    wrapper.setHashPreviousTx(txIn.txid);
+                }
 
-              for (vout_t txOut : rawTx.vout)
-              {
-                LOG(INFO) << "Script output hex: " << txOut.scriptPubKey.hex;
-                wrapper.setTo(txOut.scriptPubKey.hex);
-                wrapper.addInformationLink(to_string(txOut.value));
+                LOG(INFO) << "Index txInput " << txIn.n;
+                wrapper.setNOutpoint(txIn.n);
 
-                wrapper.addInformationLink(to_string(rawTx.time));
+                for (vout_t txOut : rawTx.vout)
+                {
+                  LOG(INFO) << "Script output hex: " << txOut.scriptPubKey.hex;
+                  wrapper.setTo(txOut.scriptPubKey.hex);
+                  wrapper.addInformationLink(to_string(txOut.value));
 
-                TransactionGraph transactionGraph;
+                  wrapper.addInformationLink(to_string(rawTx.time));
 
-                transactionGraph.buildTransaction(wrapper);
+                  TransactionGraph transactionGraph;
 
-                transactionGraph.serialize(stream);
-                wrapper.clean();
+                  transactionGraph.buildTransaction(wrapper);
 
-              }
-          }
+                  transactionGraph.serialize(stream);
+                  wrapper.clean();
 
-          wrapper.setStartBlock(actualBlock++);
+                }
+            }
 
+            wrapper.setStartBlock(actualBlock++);
+            blocksReaded++;
+        }
       }
-    }
+
+  } catch (BitcoinException btcEx) {
+    throw SpyCBlockRPCException(btcEx.getMessage());
+  }
+
 }

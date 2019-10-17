@@ -5,10 +5,16 @@
 #include <glog/logging.h>
 
 #include "HeightBlockchainCommand.h"
+#include "../SpyCBlockRPCException.h"
 
 void spyCBlockRPC::HeightBlockchainCommand::doCommand(spyCBlockRPC::WrapperInformations &wrapper, BitcoinAPI &bitcoinApi)
 {
-   int count = bitcoinApi.getblockcount();
-   LOG(INFO) << "Height blockchain: " << count;
-   wrapper.setHeightBlockchain(count);
+  try {
+    int count = bitcoinApi.getblockcount();
+    LOG(INFO) << "Height blockchain: " << count;
+    wrapper.setHeightBlockchain(count);
+  } catch (BitcoinException btcEx) {
+    throw SpyCBlockRPCException(btcEx.getMessage());
+  }
+
 }

@@ -19,8 +19,7 @@ void TransactionGraph::serialize(ofstream &stream)
 {
   LOG(INFO) << "************ Serialization this information ************\n";
   //Not serialize the transaction many to many
-  if(this->to.size() == 1 || this->from.size() == 1)
-  {
+  if(this->to.size() == 1 || this->from.size() == 1){
       string serializeTransaction;
 
       //Serialization informations input
@@ -46,7 +45,9 @@ void TransactionGraph::serialize(ofstream &stream)
          LOG(INFO) << serializeTransaction;
          stream << serializeTransaction << "\n";
        }
-     }
+    }else {
+      LOG_IF( ERROR, true) << "MANY to MANY address";
+    }
 }
 
 void TransactionGraph::buildTransaction(WrapperInformations &wrapper)

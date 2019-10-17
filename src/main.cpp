@@ -9,6 +9,7 @@
 #include <fstream>
 
 #include "commands/RPCCommandMediator.h"
+#include "SpyCBlockRPCException.h"
 
 using namespace std;
 using namespace spyCBlockRPC;
@@ -26,8 +27,8 @@ int main() {
 
       RPCCommandMediator::getInstance().doCommand(RPCCommandMediator::getInstance().DECODE_BLOCKS_COMMAND, wrapper);
 
-    }catch (BitcoinException e){
-        LOG(ERROR) << "The exception generate is: " << e.getMessage();
+    }catch (SpyCBlockRPCException ex){
+        LOG(ERROR) << "The exception generate is: " << ex.what();
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;
