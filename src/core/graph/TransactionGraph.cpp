@@ -57,7 +57,13 @@ void TransactionGraph::buildTransaction(WrapperInformations &wrapper)
   string scriptPubKey = wrapper.getTo();
   LOG(WARNING) << "Script public key: " << scriptPubKey;
 
-  this->linkInformations = wrapper.getLinkInformations();
+  //TODO This is necessary?
+  /*this->linkInformations.insert(wrapper.getLinkInformationsBlock().begin(),
+                                wrapper.getLinkInformationsBlock().end());
+
+  this->linkInformations.insert(wrapper.getLinkInformationsTransaction().begin(),
+                                wrapper.getLinkInformationsTransaction().end());*/
+
   LOG(WARNING) << "Information size: " << linkInformations.size();
 
   this->delimitator = wrapper.getDelimitator();
@@ -65,11 +71,14 @@ void TransactionGraph::buildTransaction(WrapperInformations &wrapper)
 
   RPCCommandMediator::getInstance().doCommand(RPCCommandMediator::getInstance().DECODE_SCRIPT_COMMAND, wrapper);
 
- // RPCCommandMediator::getInstance().closeConnectionWithNode(); this command close the bitcoind
-
   this->from = wrapper.getFromIdWallets();
   this->to = wrapper.getToIdWallets();
 
-  this->linkInformations = wrapper.getLinkInformations();
+  this->linkInformations.insert(wrapper.getLinkInformationsBlock().begin(),
+                                wrapper.getLinkInformationsBlock().end());
+
+  this->linkInformations.insert(wrapper.getLinkInformationsTransaction().begin(),
+                                wrapper.getLinkInformationsTransaction().end());
+
   LOG(INFO) << "Numbar information link: " << linkInformations.size();
 }

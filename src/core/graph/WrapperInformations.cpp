@@ -5,6 +5,7 @@
 #include <glog/logging.h>
 
 #include "WrapperInformations.h"
+#include "../../DefinitionMacro.h"
 
 using namespace spyCBlockRPC;
 using namespace std;
@@ -13,16 +14,48 @@ using namespace std;
 
 void WrapperInformations::addInformationLink(const string &information)
 {
-  if(information.empty())
-  {
-    LOG(ERROR) << "Information empty";
-    return; //TODO throws exception
-  }
-  this->linkInformations.insert(information);
+  assertf(!information.empty(), "The information parameter is empity, this is an wrong condition");
+
+  this->linkInformationsTransactions.insert(information);
 }
 
+void WrapperInformations::addInformationLink(WrapperInformations::TypeInsert typeInsert, const string &information)
+{
+  assertf(!information.empty(), "The information parameter is empity, this is an wrong condition");
+
+  if(typeInsert == TypeInsert::BLOCK){
+      this->linkInformationsBlocks.emplace(information);
+  }else if(typeInsert == TypeInsert::TRANSACTION){
+      this->linkInformationsTransactions.emplace(information);
+  }
+}
+
+void WrapperInformations::clean()
+{
+  //Swap the vectors.
+  this->linkInformationsTransactions.clear();
+  this->linkInformationsBlocks.clear();
+  //TODO This is unecessary?
+  //this->toIdWallets.clear();
+  //this->fromIdWallets.clear();
+}
+
+void WrapperInformations::clean(TypeInsert typeInsert)
+{
+  //Swap the vectors.
+  if(typeInsert == TypeInsert::BLOCK){
+    this->linkInformationsBlocks.clear();
+  }else if(typeInsert == TypeInsert::TRANSACTION){
+    this->linkInformationsTransactions.clear();
+  }
+  //TODO This is unecessary?
+ // this->toIdWallets.clear();
+  //this->fromIdWallets.clear();
+}
+
+
 //getter and setter
-std::string WrapperInformations::getFrom() const
+const std::string& WrapperInformations::getFrom() const
 {
     return from;
 }
@@ -32,7 +65,7 @@ void WrapperInformations::setFrom(const std::string &value)
     from = value;
 }
 
-std::string WrapperInformations::getTo() const
+const std::string& WrapperInformations::getTo() const
 {
     return to;
 }
@@ -42,22 +75,27 @@ void WrapperInformations::setTo(const std::string &value)
     to = value;
 }
 
-std::set<std::string> WrapperInformations::getLinkInformations() const
+const std::set<std::string>& WrapperInformations::getLinkInformationsTransaction()
 {
-    return linkInformations;
+  return linkInformationsTransactions;
+}
+
+const std::set<string>& WrapperInformations::getLinkInformationsBlock()
+{
+  return linkInformationsBlocks;
 }
 
 void WrapperInformations::setLinkInformations(const std::set<std::string> &value)
 {
-  linkInformations = value;
+  linkInformationsTransactions = value;
 }
 
-std::vector<std::string> WrapperInformations::getFromIdWallets() const
+const std::vector<std::string>& WrapperInformations::getFromIdWallets() const
 {
   return fromIdWallets;
 }
 
-std::vector<std::string> WrapperInformations::getToIdWallets() const
+const std::vector<std::string>& WrapperInformations::getToIdWallets() const
 {
   return toIdWallets;
 }
@@ -72,7 +110,7 @@ void WrapperInformations::setFromIdWallets(const std::vector<std::string> &value
   fromIdWallets = value;
 }
 
-std::string WrapperInformations::getDelimitator() const
+const std::string& WrapperInformations::getDelimitator() const
 {
   return delimitator;
 }
@@ -82,7 +120,7 @@ void WrapperInformations::setDelimitator(const std::string &value)
   delimitator = value;
 }
 
-std::string WrapperInformations::getHashPreviousTx() const
+const std::string& WrapperInformations::getHashPreviousTx() const
 {
     return hashPreviousTx;
 }
@@ -120,12 +158,4 @@ int WrapperInformations::getStartBlock() const
 void WrapperInformations::setStartBlock(int value)
 {
   startBlock = value;
-}
-
-void WrapperInformations::clean()
-{
-  //Swap the vectors.
-  this->linkInformations.clear();
-  this->toIdWallets.clear();
-  this->fromIdWallets.clear();
 }

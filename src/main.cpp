@@ -15,18 +15,18 @@ using namespace std;
 using namespace spyCBlockRPC;
 
 int main() {
-    google::InitGoogleLogging("2");
-    FLAGS_minloglevel = 2;
-    FLAGS_logtostderr = false;
 
-    try
-    {
+    int levelLog = ConfiguratorSingleton::getInstance().getLevelLog();
 
+    google::InitGoogleLogging(to_string(levelLog).c_str());
+    FLAGS_minloglevel = levelLog;
+    FLAGS_logtostderr = true;
+
+    try{
       WrapperInformations wrapper;
       wrapper.setDelimitator("|-|");
-
+      wrapper.setStartBlock(599758);
       RPCCommandMediator::getInstance().doCommand(RPCCommandMediator::getInstance().DECODE_BLOCKS_COMMAND, wrapper);
-
     }catch (SpyCBlockRPCException ex){
         LOG(ERROR) << "The exception generate is: " << ex.what();
         return EXIT_FAILURE;

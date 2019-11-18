@@ -38,6 +38,8 @@ namespace spyCBlockRPC
 
             int getPort() const;
 
+            int getLevelLog() const;
+
        private:
 
             const std::string USER = "USER";
@@ -51,6 +53,8 @@ namespace spyCBlockRPC
             const std::string DIR_LOG_TEST = "DIR_LOG_TEST";
 
             const std::string DIR_DATA_TEST = "DIR_DATA_TEST";
+
+            const std::string LEVEL_LOG = "LEVEL_LOG";
 
             ConfiguratorSingleton();
 

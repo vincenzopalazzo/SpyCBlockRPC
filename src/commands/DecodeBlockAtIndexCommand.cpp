@@ -12,6 +12,7 @@
 #include "../ConfiguratorSingleton.h"
 #include "../core/graph/TransactionGraph.h"
 #include "../SpyCBlockRPCException.h"
+#include "../DefinitionMacro.h"
 
 using namespace std;
 
@@ -25,13 +26,15 @@ void spyCBlockRPC::DecodeBlockAtIndexCommand::doCommand(spyCBlockRPC::WrapperInf
   heightCommand.doCommand(wrapper, bitcoinApi);
 
   int height = wrapper.getHeightBlockchain();
-  LOG_IF(ERROR, height == -1) << "Height blockchain not inizializate";
+  assertf(height != -1, "Height blockchain not inizializate")
 
   int actualBlock = wrapper.getStartBlock();
   LOG(INFO) << "Attual block get information blockchain: " << actualBlock;
   //ofstream stream(ConfiguratorSingleton::getInstance().getDirDatatest() + "/graph-to" + to_string(actualBlock) + "-from-" + to_string(actualBlock + 10));
-  int fileIndex = 0;
-  ofstream stream(ConfiguratorSingleton::getInstance().getDirDatatest() + "address-tx-"+ to_string(fileIndex) + ".txt");
+  int fileIndex = actualBlock;
+  string nameFile = ConfiguratorSingleton::getInstance().getDirDatatest() + "/address-tx-"+ to_string(fileIndex) + ".txt";
+  LOG(WARNING) << "Name file: " << nameFile;
+  ofstream stream(nameFile);
   //int saveActualValue = actualBlock;
   int blocksReaded = 0;
   int limit = 20000;
@@ -41,12 +44,14 @@ void spyCBlockRPC::DecodeBlockAtIndexCommand::doCommand(spyCBlockRPC::WrapperInf
     while(blocksReaded < height)
     {
         if(blocksReaded == limit){
-          LOG(ERROR) << "Hit limit " << limit;
+          LOG(WARNING) << "Hit limit " << limit;
           limit *= 2;
-          LOG(ERROR) << "Now limit is " << limit;
+          LOG(WARNING) << "Now limit is " << limit;
           fileIndex++;
           stream.close();
-          stream.open(ConfiguratorSingleton::getInstance().getDirDatatest() + "address-tx-"+ to_string(fileIndex) + ".txt");
+          nameFile = ConfiguratorSingleton::getInstance().getDirDatatest() + "/address-tx-"+ to_string(fileIndex) + ".txt";
+          LOG(WARNING) << "Name file: " << nameFile;
+          stream.open(nameFile);
         }
         LOG(WARNING) << "Block numbar: " << actualBlock;
         string hash = bitcoinApi.getblockhash(actualBlock);
@@ -54,22 +59,21 @@ void spyCBlockRPC::DecodeBlockAtIndexCommand::doCommand(spyCBlockRPC::WrapperInf
 
         blockinfo_t block = bitcoinApi.getblock(hash);
 
+        wrapper.addInformationLink(WrapperInformations::TypeInsert::BLOCK, "Block hash:" + hash);
+
         for(string &hashTxId : block.tx)
         {
             LOG(INFO) << "Hash is: " << hashTxId;
-            getrawtransaction_t rawTx = bitcoinApi.getrawtransaction(hashTxId, 10);
+            getrawtransaction_t rawTx = bitcoinApi.getrawtransaction(hashTxId, 1);
+
+
 
             vector<string> informationsLink;
 
-             wrapper.addInformationLink("Block hash:" + hash);
-             wrapper.addInformationLink("Transaction hash: " + hashTxId);
-
-            if(rawTx.vin.size() > 1 && rawTx.vout.size() > 1){
-               wrapper.addInformationLink("isManyToMany");
-            }
 
             for(vin_t txIn : rawTx.vin)
             {
+
                 LOG(INFO) << "Hash txInput " << txIn.txid;
                 if(txIn.txid.empty()){
                     LOG(INFO) << "Coinbase tx";
@@ -84,25 +88,32 @@ void spyCBlockRPC::DecodeBlockAtIndexCommand::doCommand(spyCBlockRPC::WrapperInf
 
                 for (vout_t txOut : rawTx.vout)
                 {
+                  //add information link of the rawTx
+                  wrapper.addInformationLink(WrapperInformations::TypeInsert::TRANSACTION, "Transaction hash: " + hashTxId);
+                  if(rawTx.vin.size() > 1 && rawTx.vout.size() > 1){
+                     wrapper.addInformationLink(WrapperInformations::TypeInsert::TRANSACTION, "isManyToMany");
+                  }
+                  //add information link inputTx
+
                   LOG(INFO) << "Script output hex: " << txOut.scriptPubKey.hex;
                   wrapper.setTo(txOut.scriptPubKey.hex);
-                  wrapper.addInformationLink(to_string(txOut.value));
+                  wrapper.addInformationLink(WrapperInformations::TypeInsert::TRANSACTION, to_string(txOut.value));
 
-                  wrapper.addInformationLink(to_string(rawTx.time));
+                  wrapper.addInformationLink(WrapperInformations::TypeInsert::TRANSACTION, to_string(rawTx.time));
 
                   TransactionGraph transactionGraph;
 
                   transactionGraph.buildTransaction(wrapper);
 
                   transactionGraph.serialize(stream);
-                  wrapper.clean();
-
+                  wrapper.clean(WrapperInformations::TypeInsert::TRANSACTION);
                 }
             }
 
             wrapper.setStartBlock(actualBlock++);
             blocksReaded++;
         }
+        wrapper.clean(WrapperInformations::TypeInsert::BLOCK);
       }
 
   } catch (BitcoinException btcEx) {

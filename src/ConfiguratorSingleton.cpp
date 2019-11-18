@@ -13,7 +13,7 @@ using namespace spyCBlockRPC;
 spyCBlockRPC::ConfiguratorSingleton::ConfiguratorSingleton()
 {
 
-  LOG(ERROR) << "Configuartion bitcoin rpc"
+  LOG(WARNING) << "Configuartion bitcoin rpc"
              << "\nusername: " << config.GetProperty(USER)
              << "\npassword: " << config.GetProperty(PASS)
              << "\nhost: " << config.GetProperty(HOST)
@@ -48,6 +48,11 @@ string ConfiguratorSingleton::getHost() const
 int ConfiguratorSingleton::getPort() const
 {
   return stoi(config.GetProperty(PORT));
+}
+
+int ConfiguratorSingleton::getLevelLog() const
+{
+  return stoi(config.GetProperty(LEVEL_LOG));
 }
 
 std::string ConfiguratorSingleton::getDirLogTest() const
