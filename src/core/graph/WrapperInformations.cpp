@@ -85,6 +85,7 @@ const std::set<string>& WrapperInformations::getLinkInformationsBlock()
   return linkInformationsBlocks;
 }
 
+
 void WrapperInformations::setLinkInformations(const std::set<std::string> &value)
 {
   linkInformationsTransactions = value;
